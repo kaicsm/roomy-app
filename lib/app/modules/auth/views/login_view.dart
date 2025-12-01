@@ -44,18 +44,22 @@ class LoginView extends StatelessWidget {
                   Watch(
                     (context) => SizedBox(
                       width: double.infinity,
+                      height: 48,
                       child: FilledButton(
                         style: ButtonStyle(
                           shape: WidgetStatePropertyAll(
                             RoundedRectangleBorder(borderRadius: .circular(12)),
                           ),
-                          padding: WidgetStatePropertyAll(.all(20)),
                         ),
                         onPressed: () async {
-                          await _controller.login();
-                          context.mounted ? context.go("/") : null;
+                          final response = await _controller.login();
+                          if (response) {
+                            context.mounted ? context.go("/") : null;
+                          }
                         },
-                        child: Text("Login"),
+                        child: _controller.isLoading.value
+                            ? CircularProgressIndicator()
+                            : Text("Login"),
                       ),
                     ),
                   ),
@@ -65,6 +69,15 @@ class LoginView extends StatelessWidget {
                       context.go("/auth/register");
                     },
                     child: Text("Don't have an account? Register"),
+                  ),
+                  const SizedBox(height: 12),
+                  Watch(
+                    (context) => _controller.errorMessage.value != null
+                        ? Text(
+                            "${_controller.errorMessage.value}",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : SizedBox.shrink(),
                   ),
                 ],
               ),

@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/core/services/auth_service.dart';
-import 'package:signals/signals_flutter.dart';
+import 'package:roomy/app/core/utils/result.dart';
+import 'package:signals/signals.dart';
 
 class LoginController {
   final _authService = getIt<AuthService>();
@@ -9,7 +9,8 @@ class LoginController {
   final username = signal('');
   final password = signal('');
 
-  final formKey = GlobalKey();
+  final isLoading = signal(false);
+  final errorMessage = signal<String?>(null);
 
   late final isValid = computed<bool>(
     () =>
@@ -18,8 +19,24 @@ class LoginController {
   );
 
   Future<bool> login() async {
-    if (!isValid.value) return false;
+    isLoading.value = true;
 
-    return await _authService.login(username.value, password.value);
+    if (!isValid.value) {
+      isLoading.value = false;
+      errorMessage.value = "Invalid information";
+      return false;
+    }
+
+    final result = await _authService.login(username.value, password.value);
+
+    switch (result) {
+      case Sucess():
+        isLoading.value = false;
+        return true;
+      case Failure(message: final msg):
+        isLoading.value = false;
+        errorMessage.value = msg;
+        return false;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:signals/signals_flutter.dart';
+import 'package:signals/signals.dart';
 
 class HomeController {
   final _counter = signal(0);

@@ -52,6 +52,7 @@ class RegisterView extends StatelessWidget {
                     Watch(
                       (context) => SizedBox(
                         width: double.infinity,
+                        height: 48,
                         child: FilledButton(
                           style: ButtonStyle(
                             shape: WidgetStatePropertyAll(
@@ -59,13 +60,16 @@ class RegisterView extends StatelessWidget {
                                 borderRadius: .circular(12),
                               ),
                             ),
-                            padding: WidgetStatePropertyAll(.all(20)),
                           ),
                           onPressed: () async {
-                            await _controller.register();
-                            context.mounted ? context.go("/") : null;
+                            final response = await _controller.register();
+                            if (response) {
+                              context.mounted ? context.go("/") : null;
+                            }
                           },
-                          child: Text("Register"),
+                          child: _controller.isLoading.value
+                              ? CircularProgressIndicator()
+                              : Text("Register"),
                         ),
                       ),
                     ),
@@ -75,6 +79,15 @@ class RegisterView extends StatelessWidget {
                         context.go("/auth/login");
                       },
                       child: Text("Already has an account? Login"),
+                    ),
+                    const SizedBox(height: 12),
+                    Watch(
+                      (context) => _controller.errorMessage.value != null
+                          ? Text(
+                              "${_controller.errorMessage.value}",
+                              style: TextStyle(color: Colors.red),
+                            )
+                          : SizedBox.shrink(),
                     ),
                   ],
                 ),

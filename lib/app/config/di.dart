@@ -10,8 +10,8 @@ final getIt = GetIt.instance;
 Future<void> setupDependencies() async {
   getIt.registerSingletonAsync<ApiService>(() async => ApiService.create());
 
-  getIt.registerSingletonWithDependencies<AuthService>(
-    () => AuthService(),
+  getIt.registerSingletonAsync<AuthService>(
+    () async => AuthService.create(),
     dependsOn: [ApiService],
   );
 

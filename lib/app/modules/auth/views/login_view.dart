@@ -1,0 +1,74 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:roomy/app/config/di.dart';
+import 'package:roomy/app/modules/auth/controllers/login_controller.dart';
+import 'package:signals/signals_flutter.dart';
+
+class LoginView extends StatelessWidget {
+  LoginView({super.key});
+
+  final _controller = getIt<LoginController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          padding: .all(16.0),
+          child: Column(
+            crossAxisAlignment: .start,
+            children: [
+              Text("Roomy", style: TextStyle(fontSize: 22)),
+              Text("Login to your account", style: TextStyle(fontSize: 16)),
+              const SizedBox(height: 12),
+              Column(
+                mainAxisAlignment: .center,
+                children: [
+                  TextField(
+                    onChanged: (value) => _controller.username.value = value,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: .circular(12)),
+                      label: Text("Username"),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    onChanged: (value) => _controller.password.value = value,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(borderRadius: .circular(12)),
+                      label: Text("Password"),
+                    ),
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 12),
+                  Watch(
+                    (context) => SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        style: ButtonStyle(
+                          shape: WidgetStatePropertyAll(
+                            RoundedRectangleBorder(borderRadius: .circular(12)),
+                          ),
+                          padding: WidgetStatePropertyAll(.all(20)),
+                        ),
+                        onPressed: () async => await _controller.login(),
+                        child: Text("Login"),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    onPressed: () {
+                      context.go("/auth/register");
+                    },
+                    child: Text("Don't have an account? Register"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

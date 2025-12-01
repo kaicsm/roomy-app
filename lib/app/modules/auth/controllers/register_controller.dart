@@ -21,8 +21,12 @@ class RegisterController {
             email.value.length >= 4),
   );
 
-  Future<void> register() async {
-    if (!isValid.value) return;
-    await _authService.register(username.value, email.value, password.value);
+  Future<bool> register() async {
+    if (!isValid.value) return false;
+    return await _authService.register(
+      username.value,
+      email.value,
+      password.value,
+    );
   }
 }

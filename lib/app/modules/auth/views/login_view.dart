@@ -25,7 +25,7 @@ class LoginView extends StatelessWidget {
                 mainAxisAlignment: .center,
                 children: [
                   TextField(
-                    onChanged: (value) => _controller.username.value = value,
+                    onChanged: _controller.username.set,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(borderRadius: .circular(12)),
                       label: Text("Username"),
@@ -33,7 +33,7 @@ class LoginView extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   TextField(
-                    onChanged: (value) => _controller.password.value = value,
+                    onChanged: _controller.password.set,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(borderRadius: .circular(12)),
                       label: Text("Password"),
@@ -51,7 +51,10 @@ class LoginView extends StatelessWidget {
                           ),
                           padding: WidgetStatePropertyAll(.all(20)),
                         ),
-                        onPressed: () async => await _controller.login(),
+                        onPressed: () async {
+                          await _controller.login();
+                          context.mounted ? context.go("/") : null;
+                        },
                         child: Text("Login"),
                       ),
                     ),

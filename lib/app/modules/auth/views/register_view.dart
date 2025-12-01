@@ -25,6 +25,7 @@ class RegisterView extends StatelessWidget {
                   mainAxisAlignment: .center,
                   children: [
                     TextField(
+                      onChanged: _controller.username.set,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(borderRadius: .circular(12)),
                         label: Text("Username"),
@@ -32,6 +33,7 @@ class RegisterView extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     TextField(
+                      onChanged: _controller.email.set,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(borderRadius: .circular(12)),
                         label: Text("Email"),
@@ -39,6 +41,7 @@ class RegisterView extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     TextField(
+                      onChanged: _controller.password.set,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(borderRadius: .circular(12)),
                         label: Text("Password"),
@@ -58,7 +61,10 @@ class RegisterView extends StatelessWidget {
                             ),
                             padding: WidgetStatePropertyAll(.all(20)),
                           ),
-                          onPressed: () async => await _controller.register(),
+                          onPressed: () async {
+                            await _controller.register();
+                            context.mounted ? context.go("/") : null;
+                          },
                           child: Text("Register"),
                         ),
                       ),

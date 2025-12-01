@@ -17,8 +17,9 @@ class LoginController {
         (password.value.isNotEmpty && password.value.length >= 5),
   );
 
-  Future<void> login() async {
-    if (!isValid.value) return;
-    await _authService.login(username.value, password.value);
+  Future<bool> login() async {
+    if (!isValid.value) return false;
+
+    return await _authService.login(username.value, password.value);
   }
 }

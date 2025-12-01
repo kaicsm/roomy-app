@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/modules/auth/controllers/register_controller.dart';
+import 'package:roomy/app/router/app_routes.dart';
 import 'package:signals/signals_flutter.dart';
 
 class RegisterView extends StatelessWidget {
@@ -64,7 +65,9 @@ class RegisterView extends StatelessWidget {
                           onPressed: () async {
                             final response = await _controller.register();
                             if (response) {
-                              context.mounted ? context.go("/") : null;
+                              context.mounted
+                                  ? context.go(AppRoutes.home)
+                                  : null;
                             }
                           },
                           child: _controller.isLoading.value
@@ -76,7 +79,7 @@ class RegisterView extends StatelessWidget {
                     const SizedBox(height: 12),
                     TextButton(
                       onPressed: () {
-                        context.go("/auth/login");
+                        context.go(AppRoutes.login);
                       },
                       child: Text("Already has an account? Login"),
                     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/modules/auth/controllers/login_controller.dart';
+import 'package:roomy/app/router/app_routes.dart';
 import 'package:signals/signals_flutter.dart';
 
 class LoginView extends StatelessWidget {
@@ -18,7 +19,7 @@ class LoginView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: .start,
             children: [
-              Text("Roomy", style: TextStyle(fontSize: 22)),
+              Text("Roomy", style: Theme.of(context).textTheme.titleLarge),
               Text("Login to your account", style: TextStyle(fontSize: 16)),
               const SizedBox(height: 12),
               Column(
@@ -54,7 +55,7 @@ class LoginView extends StatelessWidget {
                         onPressed: () async {
                           final response = await _controller.login();
                           if (response) {
-                            context.mounted ? context.go("/") : null;
+                            context.mounted ? context.go(AppRoutes.home) : null;
                           }
                         },
                         child: _controller.isLoading.value
@@ -66,7 +67,7 @@ class LoginView extends StatelessWidget {
                   const SizedBox(height: 12),
                   TextButton(
                     onPressed: () {
-                      context.go("/auth/register");
+                      context.go(AppRoutes.register);
                     },
                     child: Text("Don't have an account? Register"),
                   ),

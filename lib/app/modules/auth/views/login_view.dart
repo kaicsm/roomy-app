@@ -27,18 +27,12 @@ class LoginView extends StatelessWidget {
                 children: [
                   TextField(
                     onChanged: _controller.username.set,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: .circular(12)),
-                      label: Text("Username"),
-                    ),
+                    decoration: InputDecoration(label: Text("Username")),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     onChanged: _controller.password.set,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: .circular(12)),
-                      label: Text("Password"),
-                    ),
+                    decoration: InputDecoration(label: Text("Password")),
                     obscureText: true,
                   ),
                   const SizedBox(height: 12),
@@ -67,7 +61,7 @@ class LoginView extends StatelessWidget {
                   const SizedBox(height: 12),
                   TextButton(
                     onPressed: () {
-                      context.go(AppRoutes.register);
+                      context.push(AppRoutes.register);
                     },
                     child: Text("Don't have an account? Register"),
                   ),

@@ -12,7 +12,7 @@ class RoomWidget extends StatelessWidget {
       width: double.infinity,
       height: 80,
       decoration: BoxDecoration(
-        color: Colors.black.withAlpha(50),
+        color: Colors.black.withValues(alpha: 0.5),
         borderRadius: .circular(12),
       ),
       clipBehavior: .hardEdge,
@@ -22,7 +22,7 @@ class RoomWidget extends StatelessWidget {
           Container(
             width: 142,
             height: double.infinity,
-            decoration: BoxDecoration(color: Colors.red),
+            decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.6)),
           ),
           SizedBox(width: 12),
           Padding(

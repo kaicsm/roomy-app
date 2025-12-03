@@ -10,13 +10,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Hero(
-          tag: "appTitle",
-          child: Material(
-            type: .transparency,
-            child: Text("Roomy", style: Theme.of(context).textTheme.titleLarge),
-          ),
-        ),
+        title: Text("Roomy"),
         centerTitle: true,
         leading: IconButton(
           onPressed: () => context.push(AppRoutes.profile),
@@ -28,12 +22,28 @@ class HomeView extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: ListView.separated(
+        child: Padding(
           padding: .all(12),
-          itemCount: 12,
-          itemBuilder: (context, index) =>
-              RoomWidget("Movie name here", "username here"),
-          separatorBuilder: (context, index) => SizedBox(height: 12),
+          child: Column(
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: .circular(12)),
+                  prefixIcon: Icon(Icons.search_rounded),
+                  hintText: "Search",
+                ),
+              ),
+              SizedBox(height: 12),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: 12,
+                  itemBuilder: (context, index) =>
+                      RoomWidget("Movie name here", "username here"),
+                  separatorBuilder: (context, index) => SizedBox(height: 12),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -4,7 +4,7 @@ import 'package:roomy/app/config/api_config.dart';
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/core/services/api_service.dart';
 import 'package:roomy/app/core/utils/result.dart';
-import 'package:signals/signals.dart';
+import 'package:signals/signals_flutter.dart';
 
 class AuthService {
   final _log = Logger();

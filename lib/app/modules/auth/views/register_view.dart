@@ -13,6 +13,7 @@ class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -27,26 +28,17 @@ class RegisterView extends StatelessWidget {
                   children: [
                     TextField(
                       onChanged: _controller.username.set,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(borderRadius: .circular(12)),
-                        label: Text("Username"),
-                      ),
+                      decoration: InputDecoration(label: Text("Username")),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       onChanged: _controller.email.set,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(borderRadius: .circular(12)),
-                        label: Text("Email"),
-                      ),
+                      decoration: InputDecoration(label: Text("Email")),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       onChanged: _controller.password.set,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(borderRadius: .circular(12)),
-                        label: Text("Password"),
-                      ),
+                      decoration: InputDecoration(label: Text("Password")),
                       obscureText: true,
                     ),
                     const SizedBox(height: 12),
@@ -75,13 +67,6 @@ class RegisterView extends StatelessWidget {
                               : Text("Register"),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    TextButton(
-                      onPressed: () {
-                        context.go(AppRoutes.login);
-                      },
-                      child: Text("Already has an account? Login"),
                     ),
                     const SizedBox(height: 12),
                     Watch(

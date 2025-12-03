@@ -12,6 +12,8 @@ class LoginController {
   final isLoading = signal(false);
   final errorMessage = signal<String?>(null);
 
+  final obscurePassword = signal(true);
+
   late final isValid = computed<bool>(
     () =>
         (username.value.isNotEmpty && username.value.length >= 3) &&

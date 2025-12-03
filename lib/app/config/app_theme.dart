@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const _darkBrown = Color(0xFF231F20);
-  static const _terracotta = Color(0xFFBB4430);
-  static const _turquoise = Color(0xFF7EBDC2);
-  static const _lightYellow = Color(0xFFF3DFA2);
-  static const _lightCream = Color(0xFFEFE6DD);
+  static const _black = Color(0xFF000000);
+  static const _coral = Color(0xFFCF5C36);
+  static const _lightGray = Color(0xFFEEE5E9);
+  static const _mediumGray = Color(0xFF7C7C7C);
+  static const _peach = Color(0xFFEFC88B);
 
   static final darkTheme = ThemeData(
     useMaterial3: true,
@@ -15,51 +15,51 @@ class AppTheme {
     fontFamily: GoogleFonts.outfit().fontFamily,
 
     colorScheme: ColorScheme.dark(
-      primary: _terracotta,
-      onPrimary: _lightCream,
-      primaryContainer: Color(0xFF8B3324),
-      onPrimaryContainer: _lightCream,
+      primary: _coral,
+      onPrimary: _lightGray,
+      primaryContainer: Color(0xFFA04A2B),
+      onPrimaryContainer: _lightGray,
 
-      secondary: _turquoise,
-      onSecondary: _darkBrown,
-      secondaryContainer: Color(0xFF5A8F94),
-      onSecondaryContainer: _lightCream,
+      secondary: _peach,
+      onSecondary: _black,
+      secondaryContainer: Color(0xFFD4A967),
+      onSecondaryContainer: _lightGray,
 
-      tertiary: _lightYellow,
-      onTertiary: _darkBrown,
-      tertiaryContainer: Color(0xFFD4BC7A),
-      onTertiaryContainer: _darkBrown,
+      tertiary: _mediumGray,
+      onTertiary: _lightGray,
+      tertiaryContainer: Color(0xFF5A5A5A),
+      onTertiaryContainer: _lightGray,
 
-      surface: _darkBrown,
-      onSurface: _lightCream,
-      surfaceDim: Color(0xFF1A1718),
-      surfaceBright: Color(0xFF3A3637),
-      surfaceContainerLowest: Color(0xFF0F0D0E),
-      surfaceContainerLow: _darkBrown,
-      surfaceContainer: Color(0xFF2D2929),
-      surfaceContainerHigh: Color(0xFF3A3637),
-      surfaceContainerHighest: Color(0xFF454142),
-      onSurfaceVariant: Color(0xFFD0C8C4),
+      surface: Color(0xFF121212),
+      onSurface: _lightGray,
+      surfaceDim: _black,
+      surfaceBright: Color(0xFF2A2A2A),
+      surfaceContainerLowest: _black,
+      surfaceContainerLow: Color(0xFF121212),
+      surfaceContainer: Color(0xFF1E1E1E),
+      surfaceContainerHigh: Color(0xFF2A2A2A),
+      surfaceContainerHighest: Color(0xFF363636),
+      onSurfaceVariant: Color(0xFFD0D0D0),
 
       error: Color(0xFFFFB4AB),
       onError: Color(0xFF690005),
       errorContainer: Color(0xFF93000A),
       onErrorContainer: Color(0xFFFFDAD6),
 
-      outline: Color(0xFF5A5556),
-      outlineVariant: Color(0xFF3A3637),
+      outline: _mediumGray,
+      outlineVariant: Color(0xFF4A4A4A),
       shadow: Colors.black,
-      scrim: Colors.black54,
-      inverseSurface: _lightCream,
-      onInverseSurface: _darkBrown,
-      inversePrimary: _terracotta,
+      scrim: Colors.black87,
+      inverseSurface: _lightGray,
+      onInverseSurface: _black,
+      inversePrimary: _coral,
     ),
 
-    scaffoldBackgroundColor: _darkBrown,
+    scaffoldBackgroundColor: Color(0xFF121212),
 
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
-      foregroundColor: _lightCream,
+      foregroundColor: _lightGray,
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: true,
@@ -70,15 +70,15 @@ class AppTheme {
     ),
 
     cardTheme: CardThemeData(
-      color: Color(0xFF2D2929),
+      color: Color(0xFF1E1E1E),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: _terracotta,
-        foregroundColor: _lightCream,
+        backgroundColor: _coral,
+        foregroundColor: _lightGray,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
@@ -86,8 +86,8 @@ class AppTheme {
 
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: _terracotta,
-        side: BorderSide(color: _terracotta),
+        foregroundColor: _coral,
+        side: BorderSide(color: _coral),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
@@ -95,25 +95,25 @@ class AppTheme {
 
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: _terracotta,
+        foregroundColor: _coral,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Color(0xFF2D2929),
+      fillColor: Color(0xFF1E1E1E),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFF5A5556)),
+        borderSide: BorderSide(color: _mediumGray),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFF5A5556)),
+        borderSide: BorderSide(color: _mediumGray),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: _terracotta, width: 2),
+        borderSide: BorderSide(color: _coral, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -123,63 +123,63 @@ class AppTheme {
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: Color(0xFFFFB4AB), width: 2),
       ),
-      labelStyle: TextStyle(color: _lightCream),
-      hintStyle: TextStyle(color: _lightCream.withValues(alpha: 0.6)),
+      labelStyle: TextStyle(color: _lightGray),
+      hintStyle: TextStyle(color: _lightGray.withValues(alpha: 0.6)),
     ),
 
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: _terracotta,
-      foregroundColor: _lightCream,
+      backgroundColor: _coral,
+      foregroundColor: _lightGray,
     ),
 
     dialogTheme: DialogThemeData(
-      backgroundColor: Color(0xFF2D2929),
+      backgroundColor: Color(0xFF1E1E1E),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
 
-    dividerTheme: DividerThemeData(color: Color(0xFF5A5556), thickness: 1),
+    dividerTheme: DividerThemeData(color: _mediumGray, thickness: 1),
 
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: Color(0xFF3A3637),
-      contentTextStyle: TextStyle(color: _lightCream),
+      backgroundColor: Color(0xFF2A2A2A),
+      contentTextStyle: TextStyle(color: _lightGray),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       behavior: SnackBarBehavior.floating,
     ),
 
     chipTheme: ChipThemeData(
-      backgroundColor: Color(0xFF2D2929),
-      selectedColor: _terracotta,
-      labelStyle: TextStyle(color: _lightCream),
-      side: BorderSide(color: Color(0xFF5A5556)),
+      backgroundColor: Color(0xFF1E1E1E),
+      selectedColor: _coral,
+      labelStyle: TextStyle(color: _lightGray),
+      side: BorderSide(color: _mediumGray),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
 
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _terracotta;
-        return Color(0xFF5A5556);
+        if (states.contains(WidgetState.selected)) return _coral;
+        return _mediumGray;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return _terracotta.withValues(alpha: 0.5);
+          return _coral.withValues(alpha: 0.5);
         }
-        return Color(0xFF3A3637);
+        return Color(0xFF2A2A2A);
       }),
     ),
 
     checkboxTheme: CheckboxThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _terracotta;
+        if (states.contains(WidgetState.selected)) return _coral;
         return Colors.transparent;
       }),
-      checkColor: WidgetStateProperty.all(_lightCream),
-      side: BorderSide(color: Color(0xFF5A5556), width: 2),
+      checkColor: WidgetStateProperty.all(_lightGray),
+      side: BorderSide(color: _mediumGray, width: 2),
     ),
 
     radioTheme: RadioThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _terracotta;
-        return Color(0xFF5A5556);
+        if (states.contains(WidgetState.selected)) return _coral;
+        return _mediumGray;
       }),
     ),
   );
@@ -188,52 +188,54 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
 
+    fontFamily: GoogleFonts.outfit().fontFamily,
+
     colorScheme: ColorScheme.light(
-      primary: _terracotta,
-      onPrimary: _lightCream,
-      primaryContainer: Color(0xFFFFDAD4),
-      onPrimaryContainer: Color(0xFF5A1F14),
+      primary: _coral,
+      onPrimary: Colors.white,
+      primaryContainer: Color(0xFFFFDDD4),
+      onPrimaryContainer: Color(0xFF4A1F14),
 
-      secondary: _turquoise,
-      onSecondary: Colors.white,
-      secondaryContainer: Color(0xFFD4F0F3),
-      onSecondaryContainer: Color(0xFF2A4D50),
+      secondary: _peach,
+      onSecondary: _black,
+      secondaryContainer: Color(0xFFFFF4E0),
+      onSecondaryContainer: Color(0xFF3D2F14),
 
-      tertiary: Color(0xFFD4BC7A),
-      onTertiary: _darkBrown,
-      tertiaryContainer: _lightYellow,
-      onTertiaryContainer: Color(0xFF3D3520),
+      tertiary: _mediumGray,
+      onTertiary: Colors.white,
+      tertiaryContainer: Color(0xFFE0E0E0),
+      onTertiaryContainer: Color(0xFF2A2A2A),
 
-      surface: _lightCream,
-      onSurface: _darkBrown,
-      surfaceDim: Color(0xFFE0D7D1),
+      surface: _lightGray,
+      onSurface: _black,
+      surfaceDim: Color(0xFFE0D7DB),
       surfaceBright: Colors.white,
       surfaceContainerLowest: Colors.white,
-      surfaceContainerLow: Color(0xFFF9F2ED),
-      surfaceContainer: _lightCream,
-      surfaceContainerHigh: Color(0xFFE5DDD7),
-      surfaceContainerHighest: Color(0xFFD9D0CA),
-      onSurfaceVariant: Color(0xFF4A4544),
+      surfaceContainerLow: Color(0xFFF9F5F7),
+      surfaceContainer: _lightGray,
+      surfaceContainerHigh: Color(0xFFE5DDE1),
+      surfaceContainerHighest: Color(0xFFDBD3D7),
+      onSurfaceVariant: Color(0xFF3A3A3A),
 
       error: Color(0xFFBA1A1A),
       onError: Colors.white,
       errorContainer: Color(0xFFFFDAD6),
       onErrorContainer: Color(0xFF410002),
 
-      outline: Color(0xFF7C7574),
-      outlineVariant: Color(0xFFD0C8C4),
+      outline: _mediumGray,
+      outlineVariant: Color(0xFFC0C0C0),
       shadow: Colors.black,
       scrim: Colors.black54,
-      inverseSurface: _darkBrown,
-      onInverseSurface: _lightCream,
-      inversePrimary: Color(0xFFFFB4A8),
+      inverseSurface: Color(0xFF2A2A2A),
+      onInverseSurface: _lightGray,
+      inversePrimary: Color(0xFFFF9E7F),
     ),
 
-    scaffoldBackgroundColor: _lightCream,
+    scaffoldBackgroundColor: _lightGray,
 
     appBarTheme: AppBarTheme(
-      backgroundColor: _terracotta,
-      foregroundColor: _lightCream,
+      backgroundColor: _coral,
+      foregroundColor: Colors.white,
       elevation: 0,
       scrolledUnderElevation: 2,
       centerTitle: true,
@@ -246,16 +248,16 @@ class AppTheme {
     cardTheme: CardThemeData(
       color: Colors.white,
       elevation: 1,
-      shadowColor: _darkBrown.withValues(alpha: 0.1),
+      shadowColor: _black.withValues(alpha: 0.1),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: _terracotta,
-        foregroundColor: _lightCream,
+        backgroundColor: _coral,
+        foregroundColor: Colors.white,
         elevation: 2,
-        shadowColor: _terracotta.withValues(alpha: 0.3),
+        shadowColor: _coral.withValues(alpha: 0.3),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
@@ -263,8 +265,8 @@ class AppTheme {
 
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: _terracotta,
-        side: BorderSide(color: _terracotta, width: 1.5),
+        foregroundColor: _coral,
+        side: BorderSide(color: _coral, width: 1.5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
@@ -272,7 +274,7 @@ class AppTheme {
 
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: _terracotta,
+        foregroundColor: _coral,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     ),
@@ -282,15 +284,15 @@ class AppTheme {
       fillColor: Colors.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFFD0C8C4)),
+        borderSide: BorderSide(color: Color(0xFFC0C0C0)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFFD0C8C4)),
+        borderSide: BorderSide(color: Color(0xFFC0C0C0)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: _terracotta, width: 2),
+        borderSide: BorderSide(color: _coral, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -300,35 +302,35 @@ class AppTheme {
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: Color(0xFFBA1A1A), width: 2),
       ),
-      labelStyle: TextStyle(color: Color(0xFF4A4544)),
-      hintStyle: TextStyle(color: Color(0xFF4A4544).withValues(alpha: 0.6)),
-      prefixIconColor: Color(0xFF7C7574),
-      suffixIconColor: Color(0xFF7C7574),
+      labelStyle: TextStyle(color: Color(0xFF3A3A3A)),
+      hintStyle: TextStyle(color: Color(0xFF3A3A3A).withValues(alpha: 0.6)),
+      prefixIconColor: _mediumGray,
+      suffixIconColor: _mediumGray,
     ),
 
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: _terracotta,
-      foregroundColor: _lightCream,
+      backgroundColor: _coral,
+      foregroundColor: Colors.white,
       elevation: 4,
       highlightElevation: 8,
     ),
 
     dialogTheme: DialogThemeData(
       backgroundColor: Colors.white,
-      surfaceTintColor: _lightCream,
+      surfaceTintColor: _lightGray,
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
 
     dividerTheme: DividerThemeData(
-      color: Color(0xFFD0C8C4),
+      color: Color(0xFFC0C0C0),
       thickness: 1,
       space: 1,
     ),
 
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: _darkBrown,
-      contentTextStyle: TextStyle(color: _lightCream),
+      backgroundColor: Color(0xFF2A2A2A),
+      contentTextStyle: TextStyle(color: _lightGray),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       behavior: SnackBarBehavior.floating,
       elevation: 4,
@@ -336,87 +338,87 @@ class AppTheme {
 
     chipTheme: ChipThemeData(
       backgroundColor: Colors.white,
-      selectedColor: _terracotta.withValues(alpha: 0.2),
-      labelStyle: TextStyle(color: _darkBrown),
-      side: BorderSide(color: Color(0xFFD0C8C4)),
+      selectedColor: _coral.withValues(alpha: 0.2),
+      labelStyle: TextStyle(color: _black),
+      side: BorderSide(color: Color(0xFFC0C0C0)),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
 
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _terracotta;
-        return Color(0xFF7C7574);
+        if (states.contains(WidgetState.selected)) return _coral;
+        return _mediumGray;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return _terracotta.withValues(alpha: 0.5);
+          return _coral.withValues(alpha: 0.5);
         }
-        return Color(0xFFD0C8C4);
+        return Color(0xFFC0C0C0);
       }),
     ),
 
     checkboxTheme: CheckboxThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _terracotta;
+        if (states.contains(WidgetState.selected)) return _coral;
         return Colors.transparent;
       }),
-      checkColor: WidgetStateProperty.all(_lightCream),
-      side: BorderSide(color: Color(0xFF7C7574), width: 2),
+      checkColor: WidgetStateProperty.all(Colors.white),
+      side: BorderSide(color: _mediumGray, width: 2),
     ),
 
     radioTheme: RadioThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _terracotta;
-        return Color(0xFF7C7574);
+        if (states.contains(WidgetState.selected)) return _coral;
+        return _mediumGray;
       }),
     ),
 
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.white,
-      selectedItemColor: _terracotta,
-      unselectedItemColor: Color(0xFF7C7574),
+      selectedItemColor: _coral,
+      unselectedItemColor: _mediumGray,
       elevation: 8,
     ),
 
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: Colors.white,
-      indicatorColor: _terracotta.withValues(alpha: 0.2),
+      indicatorColor: _coral.withValues(alpha: 0.2),
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return TextStyle(
-            color: _terracotta,
+            color: _coral,
             fontSize: 12,
             fontWeight: FontWeight.w600,
           );
         }
-        return TextStyle(color: Color(0xFF7C7574), fontSize: 12);
+        return TextStyle(color: _mediumGray, fontSize: 12);
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return IconThemeData(color: _terracotta);
+          return IconThemeData(color: _coral);
         }
-        return IconThemeData(color: Color(0xFF7C7574));
+        return IconThemeData(color: _mediumGray);
       }),
     ),
 
     tabBarTheme: TabBarThemeData(
-      labelColor: _terracotta,
-      unselectedLabelColor: Color(0xFF7C7574),
-      indicatorColor: _terracotta,
-      dividerColor: Color(0xFFD0C8C4),
+      labelColor: _coral,
+      unselectedLabelColor: _mediumGray,
+      indicatorColor: _coral,
+      dividerColor: Color(0xFFC0C0C0),
     ),
 
     progressIndicatorTheme: ProgressIndicatorThemeData(
-      color: _terracotta,
-      circularTrackColor: Color(0xFFD0C8C4),
-      linearTrackColor: Color(0xFFD0C8C4),
+      color: _coral,
+      circularTrackColor: Color(0xFFC0C0C0),
+      linearTrackColor: Color(0xFFC0C0C0),
     ),
 
     sliderTheme: SliderThemeData(
-      activeTrackColor: _terracotta,
-      inactiveTrackColor: Color(0xFFD0C8C4),
-      thumbColor: _terracotta,
-      overlayColor: _terracotta.withValues(alpha: 0.2),
+      activeTrackColor: _coral,
+      inactiveTrackColor: Color(0xFFC0C0C0),
+      thumbColor: _coral,
+      overlayColor: _coral.withValues(alpha: 0.2),
     ),
   );
 }

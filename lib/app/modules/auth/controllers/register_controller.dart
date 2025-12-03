@@ -13,6 +13,8 @@ class RegisterController {
   final errorMessage = signal<String?>(null);
   final isLoading = signal(false);
 
+  final obscurePassword = signal(true);
+
   late final isValid = computed<bool>(
     () =>
         (username.value.isNotEmpty && username.value.length >= 3) &&

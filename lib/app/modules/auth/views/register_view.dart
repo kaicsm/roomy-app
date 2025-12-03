@@ -36,10 +36,21 @@ class RegisterView extends StatelessWidget {
                       decoration: InputDecoration(label: Text("Email")),
                     ),
                     const SizedBox(height: 12),
-                    TextField(
-                      onChanged: _controller.password.set,
-                      decoration: InputDecoration(label: Text("Password")),
-                      obscureText: true,
+                    Watch(
+                      (context) => TextField(
+                        onChanged: _controller.password.set,
+                        decoration: InputDecoration(
+                          label: Text("Password"),
+                          suffixIcon: IconButton(
+                            onPressed: () => _controller.obscurePassword.value =
+                                !_controller.obscurePassword.value,
+                            icon: _controller.obscurePassword.value
+                                ? Icon(Icons.visibility)
+                                : Icon(Icons.visibility_off),
+                          ),
+                        ),
+                        obscureText: _controller.obscurePassword.value,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Watch(

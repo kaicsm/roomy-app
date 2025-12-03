@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const _darkBrown = Color(0xFF231F20);
@@ -10,6 +11,8 @@ class AppTheme {
   static final darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
+
+    fontFamily: GoogleFonts.outfit().fontFamily,
 
     colorScheme: ColorScheme.dark(
       primary: _terracotta,

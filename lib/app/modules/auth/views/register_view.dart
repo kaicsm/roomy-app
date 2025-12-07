@@ -27,14 +27,14 @@ class RegisterView extends AppView<RegisterController> {
                     // Username
                     TextField(
                       onChanged: controller.username.set,
-                      decoration: InputDecoration(label: Text("Username")),
+                      decoration: InputDecoration(hintText: "Username"),
                     ),
                     const SizedBox(height: 12),
 
                     // Email
                     TextField(
                       onChanged: controller.email.set,
-                      decoration: InputDecoration(label: Text("Email")),
+                      decoration: InputDecoration(hintText: "Email"),
                     ),
                     const SizedBox(height: 12),
 
@@ -42,7 +42,7 @@ class RegisterView extends AppView<RegisterController> {
                     TextField(
                       onChanged: controller.password.set,
                       decoration: InputDecoration(
-                        label: Text("Password"),
+                        hintText: "Password",
                         suffixIcon: IconButton(
                           onPressed: () => controller.obscurePassword.set(
                             !controller.obscurePassword.value,

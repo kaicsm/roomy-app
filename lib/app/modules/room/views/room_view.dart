@@ -4,7 +4,6 @@ import 'package:media_kit_video/media_kit_video.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/room/controllers/room_controller.dart';
 import 'package:roomy/app/router/app_routes.dart';
-import 'package:signals/signals_flutter.dart';
 
 class RoomView extends AppView<RoomController> {
   const RoomView(this.id, {super.key});
@@ -12,33 +11,31 @@ class RoomView extends AppView<RoomController> {
   final String id;
 
   @override
-  Widget build(BuildContext context, RoomController controller) {
-    return FutureBuilder(
-      future: controller.initialize(id),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
+  RoomController getController(BuildContext context) {
+    return RoomController(id);
+  }
 
-        return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () => context.go(AppRoutes.home),
-              icon: const Icon(Icons.arrow_back_ios_new),
+  @override
+  Widget build(BuildContext context, RoomController controller) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => context.go(AppRoutes.home),
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
+        title: const Text("Room"),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 220,
+              child: Video(controller: controller.videoController),
             ),
-            title: const Text("Room"),
-          ),
-          body: SafeArea(
-            child: Center(
-              child: controller.isPlayerReady.watch(context)
-                  ? Video(controller: controller.videoController)
-                  : const CircularProgressIndicator(),
-            ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

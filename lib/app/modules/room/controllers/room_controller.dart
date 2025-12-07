@@ -10,10 +10,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class RoomController extends AppController {
   final _roomService = getIt<RoomService>();
 
-  final isPlayerReady = signal(false);
-
-  String? _currentRoomId;
-  String? get currentRoomId => _currentRoomId;
+  final String roomId;
 
   final videoUrl = signal(
     'https://publicdomainmovie.net/movie.php?id=Million_Dollar_Weekend_1948&type=.mp4',
@@ -23,12 +20,10 @@ class RoomController extends AppController {
   late VideoController videoController;
   late WebSocketChannel _channel;
 
-  Future<void> initialize(String roomId) async {
-    if (_currentRoomId == roomId && isPlayerReady.value) return;
+  RoomController(this.roomId);
 
-    isPlayerReady.value = false;
-    _currentRoomId = roomId;
-
+  @override
+  Future<void> init() async {
     final result = await _roomService.getWebSocketChannel(roomId);
     switch (result) {
       case Sucess(data: final channel):
@@ -42,19 +37,13 @@ class RoomController extends AppController {
     videoController = VideoController(player);
 
     await player.open(Media(videoUrl.value));
-
-    isPlayerReady.value = true;
   }
 
   @override
   void dispose() {
-    if (isPlayerReady.value) {
-      player.dispose();
-      _channel.sink.close();
-    }
+    player.dispose();
+    _channel.sink.close();
     videoUrl.dispose();
-    isPlayerReady.dispose();
-    _currentRoomId = null;
     super.dispose();
   }
 }

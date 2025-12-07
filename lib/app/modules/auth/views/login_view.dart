@@ -26,7 +26,7 @@ class LoginView extends AppView<LoginController> {
                   // Username
                   TextField(
                     onChanged: controller.username.set,
-                    decoration: InputDecoration(label: Text("Username")),
+                    decoration: InputDecoration(hintText: "Username"),
                   ),
                   const SizedBox(height: 12),
 
@@ -34,7 +34,7 @@ class LoginView extends AppView<LoginController> {
                   TextField(
                     onChanged: controller.password.set,
                     decoration: InputDecoration(
-                      label: Text("Password"),
+                      hintText: "Password",
                       suffixIcon: IconButton(
                         onPressed: () => controller.obscurePassword.set(
                           !controller.obscurePassword.value,

@@ -20,13 +20,13 @@ class CreateRoomView extends AppView<CreateRoomController> {
             children: [
               TextField(
                 onChanged: controller.name.set,
-                decoration: InputDecoration(label: Text("Name")),
+                decoration: InputDecoration(hintText: "Name"),
               ),
               const SizedBox(height: 12),
               TextField(
                 onChanged: (value) =>
                     controller.maxParticipants.value = int.parse(value),
-                decoration: InputDecoration(label: Text("Max participants")),
+                decoration: InputDecoration(hintText: "Max participants"),
                 keyboardType: .number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),

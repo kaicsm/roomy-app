@@ -8,7 +8,6 @@ import 'package:roomy/app/modules/auth/controllers/register_controller.dart';
 import 'package:roomy/app/modules/home/controllers/create_room_controller.dart';
 import 'package:roomy/app/modules/home/controllers/home_controller.dart';
 import 'package:roomy/app/modules/profile/controllers/profile_controller.dart';
-import 'package:roomy/app/modules/room/controllers/room_controller.dart';
 
 final getIt = GetIt.instance;
 
@@ -34,7 +33,6 @@ Future<void> setupDependencies() async {
   getIt.registerFactory<LoginController>(() => LoginController());
   getIt.registerFactory<RegisterController>(() => RegisterController());
   getIt.registerFactory<ProfileController>(() => ProfileController());
-  getIt.registerFactory<RoomController>(() => RoomController());
   getIt.registerFactory<CreateRoomController>(() => CreateRoomController());
 
   await getIt.allReady();

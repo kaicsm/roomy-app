@@ -7,9 +7,9 @@ import 'package:roomy/app/router/app_routes.dart';
 class AuthMiddleware {
   static String? redirect(BuildContext context, GoRouterState state) {
     final authService = getIt<AuthService>();
-    final isLogged = authService.isLogged;
+    final isAuthenticated = authService.isAuthenticated;
 
-    if (!isLogged.value) {
+    if (!isAuthenticated.value) {
       return AppRoutes.login;
     }
 

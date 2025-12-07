@@ -1,9 +1,10 @@
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/core/services/auth_service.dart';
+import 'package:roomy/app/core/utils/app_controller.dart';
 import 'package:roomy/app/core/utils/result.dart';
 import 'package:signals/signals_flutter.dart';
 
-class LoginController {
+class LoginController extends AppController {
   final _authService = getIt<AuthService>();
 
   final username = signal('');
@@ -40,5 +41,14 @@ class LoginController {
         errorMessage.value = msg;
         return false;
     }
+  }
+
+  @override
+  void dispose() {
+    username.dispose();
+    password.dispose();
+    isLoading.dispose();
+    errorMessage.dispose();
+    obscurePassword.dispose();
   }
 }

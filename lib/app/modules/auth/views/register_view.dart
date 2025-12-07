@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:roomy/app/config/di.dart';
+import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/auth/controllers/register_controller.dart';
 import 'package:roomy/app/router/app_routes.dart';
 import 'package:signals/signals_flutter.dart';
 
-class RegisterView extends StatelessWidget {
-  RegisterView({super.key});
-
-  final _controller = getIt<RegisterController>();
+class RegisterView extends AppView<RegisterController> {
+  const RegisterView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, RegisterController controller) {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -26,68 +24,68 @@ class RegisterView extends StatelessWidget {
                 Column(
                   mainAxisAlignment: .center,
                   children: [
+                    // Username
                     TextField(
-                      onChanged: _controller.username.set,
+                      onChanged: controller.username.set,
                       decoration: InputDecoration(label: Text("Username")),
                     ),
                     const SizedBox(height: 12),
+
+                    // Email
                     TextField(
-                      onChanged: _controller.email.set,
+                      onChanged: controller.email.set,
                       decoration: InputDecoration(label: Text("Email")),
                     ),
                     const SizedBox(height: 12),
-                    Watch(
-                      (context) => TextField(
-                        onChanged: _controller.password.set,
-                        decoration: InputDecoration(
-                          label: Text("Password"),
-                          suffixIcon: IconButton(
-                            onPressed: () => _controller.obscurePassword.value =
-                                !_controller.obscurePassword.value,
-                            icon: _controller.obscurePassword.value
-                                ? Icon(Icons.visibility)
-                                : Icon(Icons.visibility_off),
+
+                    // Password
+                    TextField(
+                      onChanged: controller.password.set,
+                      decoration: InputDecoration(
+                        label: Text("Password"),
+                        suffixIcon: IconButton(
+                          onPressed: () => controller.obscurePassword.set(
+                            !controller.obscurePassword.value,
+                          ),
+                          icon: controller.obscurePassword.watch(context)
+                              ? Icon(Icons.visibility)
+                              : Icon(Icons.visibility_off),
+                        ),
+                      ),
+                      obscureText: controller.obscurePassword.watch(context),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Register button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: FilledButton(
+                        style: ButtonStyle(
+                          shape: WidgetStatePropertyAll(
+                            RoundedRectangleBorder(borderRadius: .circular(12)),
                           ),
                         ),
-                        obscureText: _controller.obscurePassword.value,
+                        onPressed: () async {
+                          final response = await controller.register();
+                          if (response) {
+                            context.mounted ? context.go(AppRoutes.home) : null;
+                          }
+                        },
+                        child: controller.isLoading.watch(context)
+                            ? CircularProgressIndicator()
+                            : Text("Register"),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Watch(
-                      (context) => SizedBox(
-                        width: double.infinity,
-                        height: 48,
-                        child: FilledButton(
-                          style: ButtonStyle(
-                            shape: WidgetStatePropertyAll(
-                              RoundedRectangleBorder(
-                                borderRadius: .circular(12),
-                              ),
-                            ),
-                          ),
-                          onPressed: () async {
-                            final response = await _controller.register();
-                            if (response) {
-                              context.mounted
-                                  ? context.go(AppRoutes.home)
-                                  : null;
-                            }
-                          },
-                          child: _controller.isLoading.value
-                              ? CircularProgressIndicator()
-                              : Text("Register"),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Watch(
-                      (context) => _controller.errorMessage.value != null
-                          ? Text(
-                              "${_controller.errorMessage.value}",
-                              style: TextStyle(color: Colors.red),
-                            )
-                          : SizedBox.shrink(),
-                    ),
+
+                    // Error message
+                    controller.errorMessage.watch(context) != null
+                        ? Text(
+                            "${controller.errorMessage.value}",
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : SizedBox.shrink(),
                   ],
                 ),
               ],

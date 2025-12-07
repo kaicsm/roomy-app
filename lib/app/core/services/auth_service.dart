@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:roomy/app/config/api_config.dart';
 import 'package:roomy/app/config/di.dart';
+import 'package:roomy/app/core/models/user_model.dart';
 import 'package:roomy/app/core/services/api_service.dart';
 import 'package:roomy/app/core/utils/result.dart';
 import 'package:signals/signals_flutter.dart';
@@ -11,36 +12,38 @@ class AuthService {
 
   late final ApiService _apiService;
 
-  late final Signal<bool> _isLogged;
-  Signal<bool> get isLogged => _isLogged;
+  late final Signal<bool> _isAuthenticated;
+  Signal<bool> get isAuthenticated => _isAuthenticated;
 
-  AuthService._(this._apiService, this._isLogged);
+  AuthService._(this._apiService, this._isAuthenticated);
 
   static Future<AuthService> create() async {
     final apiService = getIt<ApiService>();
-    late final Signal<bool> isLogged;
+    bool isAuthenticated = false;
 
     try {
       await apiService.client.get('${ApiConfig.userEndpoint}/me');
-      isLogged = signal(true);
+      isAuthenticated = true;
     } catch (e) {
-      isLogged = signal(false);
+      isAuthenticated = false;
     }
 
-    return AuthService._(apiService, isLogged);
+    return AuthService._(apiService, signal(isAuthenticated));
   }
 
-  Future<Result<bool>> login(String username, String password) async {
+  Future<Result<UserModel>> login(String username, String password) async {
     try {
       final response = await _apiService.client.post(
         '${ApiConfig.authEndpoint}/login',
         data: {"username": username, "password": password},
       );
 
-      _isLogged.value = true;
-      _log.i(response);
+      final user = UserModel.fromJson(response.data);
 
-      return Sucess(true);
+      _log.i(user.toString());
+      _isAuthenticated.value = true;
+
+      return Sucess(user);
     } on DioException catch (e) {
       final errorMessage = e.response?.data ?? "Server error";
       return Failure(errorMessage);
@@ -49,7 +52,7 @@ class AuthService {
     }
   }
 
-  Future<Result<bool>> register(
+  Future<Result<UserModel>> register(
     String username,
     String email,
     String password,
@@ -60,9 +63,12 @@ class AuthService {
         data: {"username": username, "email": email, "password": password},
       );
 
-      _isLogged.value = true;
-      _log.i(response);
-      return Sucess(true);
+      final user = UserModel.fromJson(response.data);
+
+      _log.i(user.toString());
+      _isAuthenticated.value = true;
+
+      return Sucess(user);
     } on DioException catch (e) {
       final errorMessage = e.response?.data ?? "Server error";
       return Failure(errorMessage);
@@ -76,7 +82,9 @@ class AuthService {
       '${ApiConfig.authEndpoint}/logout',
     );
 
-    _isLogged.value = false;
+    _apiService.cookieJar.deleteAll();
+
+    _isAuthenticated.value = false;
     _log.i(response);
   }
 }

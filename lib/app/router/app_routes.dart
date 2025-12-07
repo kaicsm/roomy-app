@@ -3,4 +3,6 @@ class AppRoutes {
   static const login = '/auth/login';
   static const register = '/auth/register';
   static const profile = '/profile';
+  static const createRoom = '/createRoom';
+  static const room = '/room/:id';
 }

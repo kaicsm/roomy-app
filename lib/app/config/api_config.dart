@@ -1,7 +1,14 @@
-class ApiConfig {
-  static const version = 'v1';
-  static const baseUrl = 'http://localhost:3000/api/$version';
-  static const authEndpoint = '/auth';
-  static const roomEndpoint = '/rooms';
-  static const userEndpoint = '/users';
+import 'package:flutter/foundation.dart';
+import 'package:roomy/app/config/env_config.dart';
+
+abstract class ApiConfig {
+  static String version = 'v1';
+
+  static String baseUrl = kDebugMode
+      ? '${EnvConfig.serverUrlDebug}/$version'
+      : '${EnvConfig.serverUrl}/$version';
+
+  static String authEndpoint = '/auth';
+  static String roomEndpoint = '/rooms';
+  static String userEndpoint = '/users';
 }

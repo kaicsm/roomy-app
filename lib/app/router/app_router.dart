@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/core/services/auth_service.dart';
 import 'package:roomy/app/modules/auth/views/login_view.dart';
-import 'package:roomy/app/modules/auth/views/register_view.dart';
+import 'package:roomy/app/modules/auth/views/signup_view.dart';
 import 'package:roomy/app/modules/home/views/create_room_view.dart';
 import 'package:roomy/app/modules/home/views/home_view.dart';
 import 'package:roomy/app/modules/profile/views/profile_view.dart';
@@ -24,8 +25,8 @@ class AppRouter {
       GoRoute(path: AppRoutes.login, builder: (context, state) => LoginView()),
 
       GoRoute(
-        path: AppRoutes.register,
-        builder: (context, state) => RegisterView(),
+        path: AppRoutes.signup,
+        builder: (context, state) => SignupView(),
       ),
 
       GoRoute(
@@ -36,8 +37,25 @@ class AppRouter {
 
       GoRoute(
         path: AppRoutes.createRoom,
-        builder: (context, state) => CreateRoomView(),
         redirect: AuthMiddleware.redirect,
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: CreateRoomView(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  final tween = Tween(
+                    begin: const Offset(0, 1),
+                    end: Offset.zero,
+                  ).chain(CurveTween(curve: Curves.fastOutSlowIn));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+          );
+        },
       ),
 
       GoRoute(

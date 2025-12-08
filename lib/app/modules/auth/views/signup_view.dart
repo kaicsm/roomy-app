@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roomy/app/config/app_theme.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
-import 'package:roomy/app/modules/auth/controllers/login_controller.dart';
+import 'package:roomy/app/modules/auth/controllers/signup_controller.dart';
 import 'package:roomy/app/router/app_routes.dart';
 import 'package:signals/signals_flutter.dart';
 
-class LoginView extends AppView<LoginController> {
-  const LoginView({super.key});
+class SignupView extends AppView<SignupController> {
+  const SignupView({super.key});
 
   @override
-  Widget build(BuildContext context, LoginController controller) {
+  Widget build(BuildContext context, SignupController controller) {
     return Scaffold(
       appBar: AppBar(
         title: ShaderMask(
@@ -29,24 +29,28 @@ class LoginView extends AppView<LoginController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Welcome Back
-                Text(
-                  "Welcome Back!",
-                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                Text(
-                  "Log in to continue your watch party",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 15,
-                    color: Color(0xFFA8A8B3),
-                  ),
-                  textAlign: TextAlign.center,
+                // Title
+                Column(
+                  children: [
+                    Text(
+                      "Grab a Seat!",
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      "Create an account to start watching\nmovies with your friends",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 15,
+                        color: Color(0xFFA8A8B3),
+                        height: 1.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 40),
@@ -79,6 +83,35 @@ class LoginView extends AppView<LoginController> {
 
                 const SizedBox(height: 20),
 
+                // Email Field
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Email Address",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      onChanged: controller.email.set,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        errorText:
+                            controller.submitted.watch(context) &&
+                                !controller.isEmailValid
+                            ? "Invalid email"
+                            : null,
+                        hintText: "Enter your email",
+                        prefixIcon: Icon(Icons.email_outlined),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
                 // Password Field
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,12 +126,12 @@ class LoginView extends AppView<LoginController> {
                     TextField(
                       onChanged: controller.password.set,
                       decoration: InputDecoration(
-                        hintText: "Enter your password",
                         errorText:
                             controller.submitted.watch(context) &&
                                 !controller.isPasswordValid
                             ? "Invalid password"
                             : null,
+                        hintText: "Create a password",
                         prefixIcon: Icon(Icons.lock_outline),
                         suffixIcon: IconButton(
                           onPressed: () => controller.obscurePassword.set(
@@ -114,23 +147,61 @@ class LoginView extends AppView<LoginController> {
                   ],
                 ),
 
-                const SizedBox(height: 12),
+                const SizedBox(height: 20),
 
-                // Forgot Password
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      // TODO: Implement forgot password
-                    },
-                    style: ButtonStyle(overlayColor: .all(Colors.transparent)),
-                    child: Text("Forgot Password?"),
-                  ),
+                // Terms & Conditions Checkbox
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Checkbox(
+                      value: controller.termsCheck.watch(context),
+                      onChanged: (value) => controller.termsCheck.set(value!),
+
+                      side:
+                          controller.submitted.watch(context) &&
+                              !controller.isTermsAccepted
+                          ? BorderSide(color: Colors.red, width: 2)
+                          : null,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: Color(0xFF6B6B7B),
+                              fontSize: 13,
+                              height: 1.4,
+                            ),
+                            children: [
+                              TextSpan(text: "I agree to the "),
+                              TextSpan(
+                                text: "Terms & Conditions",
+                                style: TextStyle(
+                                  color: Color(0xFF6C5CE7),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextSpan(text: " and "),
+                              TextSpan(
+                                text: "Privacy Policy",
+                                style: TextStyle(
+                                  color: Color(0xFF6C5CE7),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextSpan(text: "."),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
 
-                // Login Button
+                // Sign Up Button
                 SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -138,11 +209,16 @@ class LoginView extends AppView<LoginController> {
                     onPressed: controller.isLoading.watch(context)
                         ? null
                         : () async {
-                            final response = await controller.login();
+                            final response = await controller.register();
                             if (response && context.mounted) {
                               context.go(AppRoutes.home);
                             }
                           },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
                     child: controller.isLoading.watch(context)
                         ? SizedBox(
                             width: 24,
@@ -153,36 +229,13 @@ class LoginView extends AppView<LoginController> {
                             ),
                           )
                         : Text(
-                            "Log In",
+                            "Sign Up",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                   ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Sign Up Link
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account? ",
-                      style: TextStyle(color: Color(0xFF6B6B7B), fontSize: 14),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        context.push(AppRoutes.signup);
-                      },
-                      style: ButtonStyle(
-                        padding: .all(.all(0)),
-                        overlayColor: .all(Colors.transparent),
-                      ),
-                      child: Text("Sign Up", style: TextStyle(fontSize: 14)),
-                    ),
-                  ],
                 ),
 
                 const SizedBox(height: 16),

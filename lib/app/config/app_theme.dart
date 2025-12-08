@@ -2,423 +2,398 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const _black = Color(0xFF000000);
-  static const _coral = Color(0xFFCF5C36);
-  static const _lightGray = Color(0xFFEEE5E9);
-  static const _mediumGray = Color(0xFF7C7C7C);
-  static const _peach = Color(0xFFEFC88B);
+  static const _deepNavy = Color.fromARGB(255, 12, 12, 20);
+  static const _darkerNavy = Color(0xFF13141F);
+  static const _vibrantPurple = Color(0xFF6C5CE7);
+  static const _lightPurple = Color(0xFF8B7FF4);
+  static const _accentPink = Color(0xFFFF6B9D);
+  static const _white = Color(0xFFFFFFFF);
+  static const _lightGray = Color(0xFFA8A8B3);
+  static const _mediumGray = Color(0xFF6B6B7B);
+  static const _darkGray = Color(0xFF2E2F3E);
+  static const _cardBg = Color(0xFF252637);
 
   static final darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
 
-    fontFamily: GoogleFonts.outfit().fontFamily,
+    fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
 
     colorScheme: ColorScheme.dark(
-      primary: _coral,
-      onPrimary: _lightGray,
-      primaryContainer: Color(0xFFA04A2B),
-      onPrimaryContainer: _lightGray,
+      primary: _vibrantPurple,
+      onPrimary: _white,
+      primaryContainer: _lightPurple,
+      onPrimaryContainer: _white,
 
-      secondary: _peach,
-      onSecondary: _black,
-      secondaryContainer: Color(0xFFD4A967),
-      onSecondaryContainer: _lightGray,
+      secondary: _accentPink,
+      onSecondary: _white,
+      secondaryContainer: Color(0xFFFF8BB3),
+      onSecondaryContainer: _white,
 
-      tertiary: _mediumGray,
-      onTertiary: _lightGray,
-      tertiaryContainer: Color(0xFF5A5A5A),
-      onTertiaryContainer: _lightGray,
+      tertiary: _lightGray,
+      onTertiary: _deepNavy,
+      tertiaryContainer: _mediumGray,
+      onTertiaryContainer: _white,
 
-      surface: Color(0xFF121212),
-      onSurface: _lightGray,
-      surfaceDim: _black,
-      surfaceBright: Color(0xFF2A2A2A),
-      surfaceContainerLowest: _black,
-      surfaceContainerLow: Color(0xFF121212),
-      surfaceContainer: Color(0xFF1E1E1E),
-      surfaceContainerHigh: Color(0xFF2A2A2A),
-      surfaceContainerHighest: Color(0xFF363636),
-      onSurfaceVariant: Color(0xFFD0D0D0),
+      surface: _deepNavy,
+      onSurface: _white,
+      surfaceDim: _darkerNavy,
+      surfaceBright: _cardBg,
+      surfaceContainerLowest: _darkerNavy,
+      surfaceContainerLow: _deepNavy,
+      surfaceContainer: _cardBg,
+      surfaceContainerHigh: Color(0xFF2E2F42),
+      surfaceContainerHighest: Color(0xFF3A3B52),
+      onSurfaceVariant: _lightGray,
 
-      error: Color(0xFFFFB4AB),
-      onError: Color(0xFF690005),
+      error: Color(0xFFFF6B9D),
+      onError: _white,
       errorContainer: Color(0xFF93000A),
       onErrorContainer: Color(0xFFFFDAD6),
 
       outline: _mediumGray,
-      outlineVariant: Color(0xFF4A4A4A),
+      outlineVariant: _darkGray,
       shadow: Colors.black,
       scrim: Colors.black87,
-      inverseSurface: _lightGray,
-      onInverseSurface: _black,
-      inversePrimary: _coral,
+      inverseSurface: _white,
+      onInverseSurface: _deepNavy,
+      inversePrimary: _vibrantPurple,
     ),
 
-    scaffoldBackgroundColor: Color(0xFF121212),
+    scaffoldBackgroundColor: _deepNavy,
 
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.transparent,
-      foregroundColor: _lightGray,
+      backgroundColor: _deepNavy,
+      foregroundColor: _white,
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: true,
+      titleTextStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: _white,
+      ),
     ),
 
     actionIconTheme: ActionIconThemeData(
-      backButtonIconBuilder: (context) => const Icon(Icons.arrow_back_ios_new),
+      backButtonIconBuilder: (context) => const Icon(Icons.arrow_back),
     ),
 
     cardTheme: CardThemeData(
-      color: Color(0xFF1E1E1E),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    ),
-
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _coral,
-        foregroundColor: _lightGray,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      ),
-    ),
-
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        foregroundColor: _coral,
-        side: BorderSide(color: _coral),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      ),
-    ),
-
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        foregroundColor: _coral,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-    ),
-
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: Color(0xFF1E1E1E),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: _mediumGray),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: _mediumGray),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: _coral, width: 2),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFFFFB4AB)),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFFFFB4AB), width: 2),
-      ),
-      labelStyle: TextStyle(color: _lightGray),
-      hintStyle: TextStyle(color: _lightGray.withValues(alpha: 0.6)),
-    ),
-
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: _coral,
-      foregroundColor: _lightGray,
-    ),
-
-    dialogTheme: DialogThemeData(
-      backgroundColor: Color(0xFF1E1E1E),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-    ),
-
-    dividerTheme: DividerThemeData(color: _mediumGray, thickness: 1),
-
-    snackBarTheme: SnackBarThemeData(
-      backgroundColor: Color(0xFF2A2A2A),
-      contentTextStyle: TextStyle(color: _lightGray),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      behavior: SnackBarBehavior.floating,
-    ),
-
-    chipTheme: ChipThemeData(
-      backgroundColor: Color(0xFF1E1E1E),
-      selectedColor: _coral,
-      labelStyle: TextStyle(color: _lightGray),
-      side: BorderSide(color: _mediumGray),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-    ),
-
-    switchTheme: SwitchThemeData(
-      thumbColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _coral;
-        return _mediumGray;
-      }),
-      trackColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) {
-          return _coral.withValues(alpha: 0.5);
-        }
-        return Color(0xFF2A2A2A);
-      }),
-    ),
-
-    checkboxTheme: CheckboxThemeData(
-      fillColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _coral;
-        return Colors.transparent;
-      }),
-      checkColor: WidgetStateProperty.all(_lightGray),
-      side: BorderSide(color: _mediumGray, width: 2),
-    ),
-
-    radioTheme: RadioThemeData(
-      fillColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _coral;
-        return _mediumGray;
-      }),
-    ),
-  );
-
-  static final lightTheme = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.light,
-
-    fontFamily: GoogleFonts.outfit().fontFamily,
-
-    colorScheme: ColorScheme.light(
-      primary: _coral,
-      onPrimary: Colors.white,
-      primaryContainer: Color(0xFFFFDDD4),
-      onPrimaryContainer: Color(0xFF4A1F14),
-
-      secondary: _peach,
-      onSecondary: _black,
-      secondaryContainer: Color(0xFFFFF4E0),
-      onSecondaryContainer: Color(0xFF3D2F14),
-
-      tertiary: _mediumGray,
-      onTertiary: Colors.white,
-      tertiaryContainer: Color(0xFFE0E0E0),
-      onTertiaryContainer: Color(0xFF2A2A2A),
-
-      surface: _lightGray,
-      onSurface: _black,
-      surfaceDim: Color(0xFFE0D7DB),
-      surfaceBright: Colors.white,
-      surfaceContainerLowest: Colors.white,
-      surfaceContainerLow: Color(0xFFF9F5F7),
-      surfaceContainer: _lightGray,
-      surfaceContainerHigh: Color(0xFFE5DDE1),
-      surfaceContainerHighest: Color(0xFFDBD3D7),
-      onSurfaceVariant: Color(0xFF3A3A3A),
-
-      error: Color(0xFFBA1A1A),
-      onError: Colors.white,
-      errorContainer: Color(0xFFFFDAD6),
-      onErrorContainer: Color(0xFF410002),
-
-      outline: _mediumGray,
-      outlineVariant: Color(0xFFC0C0C0),
-      shadow: Colors.black,
-      scrim: Colors.black54,
-      inverseSurface: Color(0xFF2A2A2A),
-      onInverseSurface: _lightGray,
-      inversePrimary: Color(0xFFFF9E7F),
-    ),
-
-    scaffoldBackgroundColor: _lightGray,
-
-    appBarTheme: AppBarTheme(
-      backgroundColor: _coral,
-      foregroundColor: Colors.white,
+      color: _cardBg,
       elevation: 0,
-      scrolledUnderElevation: 2,
-      centerTitle: true,
-    ),
-
-    actionIconTheme: ActionIconThemeData(
-      backButtonIconBuilder: (context) => const Icon(Icons.arrow_back_ios_new),
-    ),
-
-    cardTheme: CardThemeData(
-      color: Colors.white,
-      elevation: 1,
-      shadowColor: _black.withValues(alpha: 0.1),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      margin: EdgeInsets.zero,
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: _coral,
-        foregroundColor: Colors.white,
-        elevation: 2,
-        shadowColor: _coral.withValues(alpha: 0.3),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        backgroundColor: _vibrantPurple,
+        foregroundColor: _white,
+        elevation: 5,
+        shadowColor: _vibrantPurple.withValues(alpha: 0.5),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+        textStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     ),
 
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: _coral,
-        side: BorderSide(color: _coral, width: 1.5),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        foregroundColor: _white,
+        backgroundColor: _cardBg,
+        side: BorderSide(color: _darkGray, width: 1.5),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+        textStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     ),
 
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-        foregroundColor: _coral,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        foregroundColor: _vibrantPurple,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Colors.white,
+      fillColor: _cardBg,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFFC0C0C0)),
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFFC0C0C0)),
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: _coral, width: 2),
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: _vibrantPurple, width: 2),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFFBA1A1A)),
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: _accentPink),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Color(0xFFBA1A1A), width: 2),
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: _accentPink, width: 2),
       ),
-      labelStyle: TextStyle(color: Color(0xFF3A3A3A)),
-      hintStyle: TextStyle(color: Color(0xFF3A3A3A).withValues(alpha: 0.6)),
+      labelStyle: GoogleFonts.plusJakartaSans(color: _lightGray, fontSize: 14),
+      hintStyle: GoogleFonts.plusJakartaSans(color: _mediumGray, fontSize: 15),
       prefixIconColor: _mediumGray,
       suffixIconColor: _mediumGray,
+      contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
     ),
 
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: _coral,
-      foregroundColor: Colors.white,
-      elevation: 4,
-      highlightElevation: 8,
+      backgroundColor: _vibrantPurple,
+      foregroundColor: _white,
+      elevation: 8,
+      highlightElevation: 12,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     ),
 
     dialogTheme: DialogThemeData(
-      backgroundColor: Colors.white,
-      surfaceTintColor: _lightGray,
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: _cardBg,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      elevation: 8,
     ),
 
-    dividerTheme: DividerThemeData(
-      color: Color(0xFFC0C0C0),
-      thickness: 1,
-      space: 1,
-    ),
+    dividerTheme: DividerThemeData(color: _darkGray, thickness: 1),
 
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: Color(0xFF2A2A2A),
-      contentTextStyle: TextStyle(color: _lightGray),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      backgroundColor: _cardBg,
+      contentTextStyle: GoogleFonts.plusJakartaSans(color: _white),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       behavior: SnackBarBehavior.floating,
-      elevation: 4,
     ),
 
     chipTheme: ChipThemeData(
-      backgroundColor: Colors.white,
-      selectedColor: _coral.withValues(alpha: 0.2),
-      labelStyle: TextStyle(color: _black),
-      side: BorderSide(color: Color(0xFFC0C0C0)),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      backgroundColor: _cardBg,
+      selectedColor: _vibrantPurple,
+      labelStyle: GoogleFonts.plusJakartaSans(color: _white),
+      side: BorderSide.none,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     ),
 
     switchTheme: SwitchThemeData(
       thumbColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _coral;
+        if (states.contains(WidgetState.selected)) return _vibrantPurple;
         return _mediumGray;
       }),
       trackColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return _coral.withValues(alpha: 0.5);
+          return _vibrantPurple.withValues(alpha: 0.5);
         }
-        return Color(0xFFC0C0C0);
+        return _darkGray;
       }),
     ),
 
     checkboxTheme: CheckboxThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _coral;
+        if (states.contains(WidgetState.selected)) return _vibrantPurple;
         return Colors.transparent;
       }),
-      checkColor: WidgetStateProperty.all(Colors.white),
+      checkColor: WidgetStateProperty.all(_white),
       side: BorderSide(color: _mediumGray, width: 2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
     ),
 
     radioTheme: RadioThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.selected)) return _coral;
+        if (states.contains(WidgetState.selected)) return _vibrantPurple;
         return _mediumGray;
       }),
     ),
 
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.white,
-      selectedItemColor: _coral,
+      backgroundColor: _darkerNavy,
+      selectedItemColor: _vibrantPurple,
       unselectedItemColor: _mediumGray,
-      elevation: 8,
+      elevation: 0,
+      type: BottomNavigationBarType.fixed,
+      selectedLabelStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+      ),
+      unselectedLabelStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+      ),
     ),
 
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: Colors.white,
-      indicatorColor: _coral.withValues(alpha: 0.2),
+      backgroundColor: _darkerNavy,
+      indicatorColor: _vibrantPurple.withValues(alpha: 0.2),
+      height: 70,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return TextStyle(
-            color: _coral,
+          return GoogleFonts.plusJakartaSans(
+            color: _vibrantPurple,
             fontSize: 12,
             fontWeight: FontWeight.w600,
           );
         }
-        return TextStyle(color: _mediumGray, fontSize: 12);
+        return GoogleFonts.plusJakartaSans(
+          color: _mediumGray,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        );
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
-          return IconThemeData(color: _coral);
+          return IconThemeData(color: _vibrantPurple, size: 26);
         }
-        return IconThemeData(color: _mediumGray);
+        return IconThemeData(color: _mediumGray, size: 24);
       }),
     ),
 
     tabBarTheme: TabBarThemeData(
-      labelColor: _coral,
+      labelColor: _vibrantPurple,
       unselectedLabelColor: _mediumGray,
-      indicatorColor: _coral,
-      dividerColor: Color(0xFFC0C0C0),
+      indicatorColor: _vibrantPurple,
+      dividerColor: Colors.transparent,
+      labelStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+      ),
+      unselectedLabelStyle: GoogleFonts.plusJakartaSans(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+      ),
     ),
 
     progressIndicatorTheme: ProgressIndicatorThemeData(
-      color: _coral,
-      circularTrackColor: Color(0xFFC0C0C0),
-      linearTrackColor: Color(0xFFC0C0C0),
+      color: _vibrantPurple,
+      circularTrackColor: _darkGray,
+      linearTrackColor: _darkGray,
     ),
 
     sliderTheme: SliderThemeData(
-      activeTrackColor: _coral,
-      inactiveTrackColor: Color(0xFFC0C0C0),
-      thumbColor: _coral,
-      overlayColor: _coral.withValues(alpha: 0.2),
+      activeTrackColor: _vibrantPurple,
+      inactiveTrackColor: _darkGray,
+      thumbColor: _vibrantPurple,
+      overlayColor: _vibrantPurple.withValues(alpha: 0.2),
+      trackHeight: 4,
+    ),
+
+    textTheme: TextTheme(
+      displayLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 57,
+        fontWeight: FontWeight.w700,
+        color: _white,
+      ),
+      displayMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 45,
+        fontWeight: FontWeight.w700,
+        color: _white,
+      ),
+      displaySmall: GoogleFonts.plusJakartaSans(
+        fontSize: 36,
+        fontWeight: FontWeight.w700,
+        color: _white,
+      ),
+      headlineLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 32,
+        fontWeight: FontWeight.w700,
+        color: _white,
+      ),
+      headlineMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 28,
+        fontWeight: FontWeight.w700,
+        color: _white,
+      ),
+      headlineSmall: GoogleFonts.plusJakartaSans(
+        fontSize: 24,
+        fontWeight: FontWeight.w600,
+        color: _white,
+      ),
+      titleLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: _white,
+      ),
+      titleMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: _white,
+      ),
+      titleSmall: GoogleFonts.plusJakartaSans(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: _white,
+      ),
+      bodyLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: _white,
+      ),
+      bodyMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: _lightGray,
+      ),
+      bodySmall: GoogleFonts.plusJakartaSans(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: _lightGray,
+      ),
+      labelLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: _white,
+      ),
+      labelMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 12,
+        fontWeight: FontWeight.w600,
+        color: _white,
+      ),
+      labelSmall: GoogleFonts.plusJakartaSans(
+        fontSize: 11,
+        fontWeight: FontWeight.w600,
+        color: _mediumGray,
+      ),
+    ),
+  );
+
+  static const liveIndicatorColor = Color(0xFFFF4757);
+  static const onlineStatusColor = Color(0xFF2ECC71);
+  static const gradientStart = Color.fromARGB(255, 144, 132, 240);
+  static const gradientEnd = Color.fromARGB(255, 195, 110, 245);
+
+  static const primaryGradient = LinearGradient(
+    colors: [gradientStart, gradientEnd],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static const buttonGradient = LinearGradient(
+    colors: [Color(0xFF6C5CE7), Color(0xFF8B7FF4)],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
+  static final lightTheme = ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.light,
+    fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
+    colorScheme: ColorScheme.light(
+      primary: _vibrantPurple,
+      onPrimary: _white,
+      surface: Colors.white,
+      onSurface: _deepNavy,
     ),
   );
 }

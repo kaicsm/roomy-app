@@ -4,35 +4,41 @@ import 'package:roomy/app/core/utils/app_controller.dart';
 import 'package:roomy/app/core/utils/result.dart';
 import 'package:signals/signals_flutter.dart';
 
-class RegisterController extends AppController {
+class SignupController extends AppController {
   final _authService = getIt<AuthService>();
 
   final username = signal('');
   final email = signal('');
   final password = signal('');
 
-  final errorMessage = signal<String?>(null);
   final isLoading = signal(false);
+  final errorMessage = signal<String?>(null);
 
   final obscurePassword = signal(true);
+  final termsCheck = signal(false);
+  final submitted = signal(false);
+
+  final _usernameRegex = RegExp(r'^[a-zA-Z0-9_]{3,20}$');
+  final _emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+
+  bool get isUsernameValid => _usernameRegex.hasMatch(username.value);
+  bool get isEmailValid => _emailRegex.hasMatch(email.value.trim());
+  bool get isPasswordValid => password.value.length >= 6;
+  bool get isTermsAccepted => termsCheck.value;
 
   late final isValid = computed<bool>(
-    () =>
-        (username.value.isNotEmpty && username.value.length >= 3) &&
-        (password.value.isNotEmpty && password.value.length >= 5) &&
-        (email.value.isNotEmpty &&
-            email.value.contains('@') &&
-            email.value.length >= 4),
+    () => isUsernameValid && isEmailValid && isPasswordValid && isTermsAccepted,
   );
 
   Future<bool> register() async {
-    isLoading.value = true;
+    submitted.value = true;
+    errorMessage.value = null;
 
     if (!isValid.value) {
-      isLoading.value = false;
-      errorMessage.value = "Invalid information";
       return false;
     }
+
+    isLoading.value = true;
 
     final result = await _authService.register(
       username.value,
@@ -44,6 +50,7 @@ class RegisterController extends AppController {
       case Sucess():
         isLoading.value = false;
         return true;
+
       case Failure(message: final msg):
         isLoading.value = false;
         errorMessage.value = msg;
@@ -54,9 +61,12 @@ class RegisterController extends AppController {
   @override
   void dispose() {
     username.dispose();
-    password.dispose();
     email.dispose();
+    password.dispose();
+    isLoading.dispose();
     errorMessage.dispose();
     obscurePassword.dispose();
+    termsCheck.dispose();
+    submitted.dispose();
   }
 }

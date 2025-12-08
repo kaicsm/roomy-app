@@ -13,6 +13,7 @@ class HomeController extends AppController {
 
   final rooms = signal<List<RoomModel>>([]);
   final search = signal('');
+  final isSearching = signal(false);
 
   late final filteredRooms = computed(() {
     final searchTerm = search.value.toLowerCase().trim();
@@ -34,6 +35,7 @@ class HomeController extends AppController {
   void dispose() {
     rooms.dispose();
     search.dispose();
+    isSearching.dispose();
   }
 
   Future<void> getPublicRooms() async {

@@ -9,15 +9,13 @@ class CreateRoomController extends AppController {
   final _roomService = getIt<RoomService>();
 
   final name = signal('');
-
-  final maxParticipants = signal(10);
-
+  final mediaLink = signal<String?>(null);
+  final selectedPlatform = signal('');
   final isPublic = signal(true);
 
   Future<RoomModel?> createRoom() async {
     final result = await _roomService.createRoom(
       name.value,
-      maxParticipants: maxParticipants.value,
       isPublic: isPublic.value,
     );
 
@@ -32,7 +30,6 @@ class CreateRoomController extends AppController {
   @override
   void dispose() {
     name.dispose();
-    maxParticipants.dispose();
     isPublic.dispose();
   }
 }

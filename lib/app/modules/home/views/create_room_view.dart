@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/home/controllers/create_room_controller.dart';
 import 'package:signals/signals_flutter.dart';
@@ -11,49 +12,170 @@ class CreateRoomView extends AppView<CreateRoomController> {
   @override
   Widget build(BuildContext context, CreateRoomController controller) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create Room")),
+      appBar: AppBar(title: const Text("New Room")),
       body: SafeArea(
-        child: Padding(
-          padding: .all(12),
-          child: Column(
-            mainAxisAlignment: .center,
-            children: [
-              TextField(
-                onChanged: controller.name.set,
-                decoration: InputDecoration(hintText: "Name"),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                onChanged: (value) =>
-                    controller.maxParticipants.value = int.parse(value),
-                decoration: InputDecoration(hintText: "Max participants"),
-                keyboardType: .number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Text("Public"),
-                  const SizedBox(width: 12),
-                  Switch(
-                    value: controller.isPublic.watch(context),
-                    onChanged: controller.isPublic.set,
-                  ),
-                ],
-              ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    _StreamingCard(
+                      icon: Icon(AntDesign.youtube_fill, color: Colors.grey),
+                      title: "YouTube",
+                      subtitle: "Streaming",
+                      isSelected:
+                          controller.selectedPlatform.watch(context) ==
+                          "youtube",
+                      onTap: () =>
+                          controller.selectedPlatform.value = "youtube",
+                    ),
+                    _StreamingCard(
+                      icon: SvgPicture.asset(
+                        "assets/logos/netflix.svg",
+                        colorFilter: .mode(Colors.grey, .srcIn),
+                      ),
 
-              const SizedBox(height: 12),
-              FilledButton(
-                onPressed: () async {
-                  final room = await controller.createRoom();
-                  if (room != null && context.mounted) {
-                    context.pushReplacement('/room/${room.id}');
-                  }
-                },
-                child: Text("Create"),
-              ),
-            ],
+                      title: "Netflix",
+                      subtitle: "Streaming",
+                      isSelected:
+                          controller.selectedPlatform.watch(context) ==
+                          "netflix",
+                      onTap: () =>
+                          controller.selectedPlatform.value = "netflix",
+                    ),
+                    _StreamingCard(
+                      icon: Icon(
+                        FontAwesome.google_drive_brand,
+                        color: Colors.grey,
+                      ),
+                      title: "Google Drive",
+                      subtitle: "Cloud Storage",
+                      isSelected:
+                          controller.selectedPlatform.watch(context) == "drive",
+                      onTap: () => controller.selectedPlatform.value = "drive",
+                    ),
+                    _StreamingCard(
+                      icon: Icon(FontAwesome.globe_solid, color: Colors.grey),
+                      title: "Web",
+                      subtitle: "Streaming",
+                      isSelected:
+                          controller.selectedPlatform.watch(context) == "hulu",
+                      onTap: () => controller.selectedPlatform.value = "hulu",
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final room = await controller.createRoom();
+                      if (room != null && context.mounted) {
+                        context.pushReplacement('/room/${room.id}');
+                      }
+                    },
+                    child: const Text("Continue"),
+                  ),
+                ),
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StreamingCard extends StatelessWidget {
+  final Widget icon;
+  final String title;
+  final String subtitle;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _StreamingCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.cardTheme.color,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? theme.colorScheme.primary : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: SizedBox(width: 32, height: 32, child: icon),
+                ),
+                Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isSelected
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.outline,
+                      width: 2,
+                    ),
+                    color: isSelected
+                        ? theme.colorScheme.primary
+                        : Colors.transparent,
+                  ),
+                  child: isSelected
+                      ? Icon(
+                          Icons.check,
+                          size: 16,
+                          color: theme.colorScheme.onPrimary,
+                        )
+                      : null,
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: theme.textTheme.titleMedium),
+                const SizedBox(height: 2),
+                Text(subtitle, style: theme.textTheme.bodySmall),
+              ],
+            ),
+          ],
         ),
       ),
     );

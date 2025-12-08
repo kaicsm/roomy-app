@@ -15,20 +15,24 @@ class LoginController extends AppController {
 
   final obscurePassword = signal(true);
 
-  late final isValid = computed<bool>(
-    () =>
-        (username.value.isNotEmpty && username.value.length >= 3) &&
-        (password.value.isNotEmpty && password.value.length >= 5),
-  );
+  final submitted = signal(false);
+
+  final _usernameRegex = RegExp(r'^[a-zA-Z0-9_]{3,20}$');
+
+  bool get isUsernameValid => _usernameRegex.hasMatch(username.value);
+  bool get isPasswordValid => password.value.length >= 6;
+
+  late final isValid = computed<bool>(() => isUsernameValid && isPasswordValid);
 
   Future<bool> login() async {
-    isLoading.value = true;
+    submitted.value = true;
+    errorMessage.value = null;
 
     if (!isValid.value) {
-      isLoading.value = false;
-      errorMessage.value = "Invalid information";
       return false;
     }
+
+    isLoading.value = true;
 
     final result = await _authService.login(username.value, password.value);
 
@@ -36,6 +40,7 @@ class LoginController extends AppController {
       case Sucess():
         isLoading.value = false;
         return true;
+
       case Failure(message: final msg):
         isLoading.value = false;
         errorMessage.value = msg;
@@ -50,5 +55,6 @@ class LoginController extends AppController {
     isLoading.dispose();
     errorMessage.dispose();
     obscurePassword.dispose();
+    submitted.dispose();
   }
 }

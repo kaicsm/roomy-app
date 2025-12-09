@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:roomy/app/config/api_config.dart';
 import 'package:roomy/app/config/di.dart';
@@ -21,7 +22,7 @@ class RoomService {
 
       _log.i(roomsList.toString());
 
-      return Sucess(roomsList);
+      return Success(roomsList);
     } catch (e) {
       _log.e(e);
       return Failure(e.toString());
@@ -49,14 +50,33 @@ class RoomService {
 
       _log.i(room);
 
-      return Sucess(room);
+      return Success(room);
     } catch (e) {
       _log.e(e);
       return Failure(e.toString());
     }
   }
 
-  Future<Result<WebSocketChannel>> getWebSocketChannel(String roomId) async {
+  Future<Result<RoomFullStateModel>> getRoomDetails(String roomId) async {
+    try {
+      final response = await _apiService.client.get(
+        '${ApiConfig.roomEndpoint}/$roomId',
+      );
+
+      final roomState = RoomFullStateModel.fromJson(response.data);
+
+      _log.i('Fetched room details: $roomId');
+      return Success(roomState);
+    } on DioException catch (e) {
+      _log.e('Failed to fetch room details', error: e);
+      return Failure(e.toString());
+    } catch (e) {
+      _log.e('Unexpected error fetching room details', error: e);
+      return Failure(e.toString());
+    }
+  }
+
+  Future<Result<WebSocketChannel>> connectToRoom(String roomId) async {
     try {
       final authCookie = (await _apiService.cookieJar.loadForRequest(
         Uri.parse(ApiConfig.baseUrl),
@@ -68,11 +88,8 @@ class RoomService {
       _log.i(url);
 
       final channel = WebSocketChannel.connect(Uri.parse(url));
-
       await channel.ready;
-
-      _log.i(channel);
-      return Sucess(channel);
+      return Success(channel);
     } catch (e) {
       _log.e(e);
       return Failure(e.toString());

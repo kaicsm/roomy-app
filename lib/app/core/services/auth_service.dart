@@ -43,7 +43,7 @@ class AuthService {
       _log.i(user.toString());
       _isAuthenticated.value = true;
 
-      return Sucess(user);
+      return Success(user);
     } on DioException catch (e) {
       final errorMessage = e.response?.data ?? "Server error";
       return Failure(errorMessage);
@@ -68,7 +68,7 @@ class AuthService {
       _log.i(user.toString());
       _isAuthenticated.value = true;
 
-      return Sucess(user);
+      return Success(user);
     } on DioException catch (e) {
       final errorMessage = e.response?.data ?? "Server error";
       return Failure(errorMessage);

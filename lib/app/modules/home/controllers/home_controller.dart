@@ -42,7 +42,7 @@ class HomeController extends AppController {
     final result = await _roomService.getPublicRooms();
 
     switch (result) {
-      case Sucess(data: final rooms):
+      case Success(data: final rooms):
         this.rooms.set(rooms);
       case Failure():
         break;
@@ -53,7 +53,7 @@ class HomeController extends AppController {
     final result = await _userService.getUser(id);
 
     switch (result) {
-      case Sucess(data: final user):
+      case Success(data: final user):
         return user;
       case Failure():
         return null;

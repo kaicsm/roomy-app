@@ -1,3 +1,5 @@
+import 'package:roomy/app/core/models/playback_state_model.dart';
+
 class RoomModel {
   final String id;
   final String name;
@@ -33,7 +35,7 @@ class RoomModel {
       'hostId': hostId,
       'isPublic': isPublic,
       'maxParticipants': maxParticipants,
-      'createdAt': createdAt,
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 
@@ -49,4 +51,31 @@ class RoomModel {
 
   @override
   int get hashCode => id.hashCode;
+}
+
+class RoomFullStateModel {
+  final RoomModel room;
+  final List<String> members;
+  final PlaybackStateModel? playbackState;
+
+  RoomFullStateModel({
+    required this.room,
+    required this.members,
+    this.playbackState,
+  });
+
+  factory RoomFullStateModel.fromJson(Map<String, dynamic> json) {
+    return RoomFullStateModel(
+      room: RoomModel.fromJson(json),
+      members: (json['members'] as List).cast<String>(),
+      playbackState: json['playbackState'] != null
+          ? PlaybackStateModel.fromJson(json['playbackState'])
+          : null,
+    );
+  }
+
+  String get roomId => room.id;
+  String get hostId => room.hostId;
+  bool isHost(String userId) => room.hostId == userId;
+  bool isMember(String userId) => members.contains(userId);
 }

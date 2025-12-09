@@ -151,7 +151,8 @@ class SignupView extends AppView<SignupController> {
 
                 // Terms & Conditions Checkbox
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: .center,
+                  mainAxisAlignment: .center,
                   children: [
                     Checkbox(
                       value: controller.termsCheck.watch(context),
@@ -164,35 +165,32 @@ class SignupView extends AppView<SignupController> {
                           : null,
                     ),
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: RichText(
-                          text: TextSpan(
-                            style: TextStyle(
-                              color: Color(0xFF6B6B7B),
-                              fontSize: 13,
-                              height: 1.4,
-                            ),
-                            children: [
-                              TextSpan(text: "I agree to the "),
-                              TextSpan(
-                                text: "Terms & Conditions",
-                                style: TextStyle(
-                                  color: Color(0xFF6C5CE7),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              TextSpan(text: " and "),
-                              TextSpan(
-                                text: "Privacy Policy",
-                                style: TextStyle(
-                                  color: Color(0xFF6C5CE7),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              TextSpan(text: "."),
-                            ],
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            color: Color(0xFF6B6B7B),
+                            fontSize: 13,
+                            height: 1.4,
                           ),
+                          children: [
+                            TextSpan(text: "I agree to the "),
+                            TextSpan(
+                              text: "Terms & Conditions",
+                              style: TextStyle(
+                                color: Color(0xFF6C5CE7),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(text: " and "),
+                            TextSpan(
+                              text: "Privacy Policy",
+                              style: TextStyle(
+                                color: Color(0xFF6C5CE7),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextSpan(text: "."),
+                          ],
                         ),
                       ),
                     ),

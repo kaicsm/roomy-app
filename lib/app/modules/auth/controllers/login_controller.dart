@@ -37,7 +37,7 @@ class LoginController extends AppController {
     final result = await _authService.login(username.value, password.value);
 
     switch (result) {
-      case Sucess():
+      case Success():
         isLoading.value = false;
         return true;
 

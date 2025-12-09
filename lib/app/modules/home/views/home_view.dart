@@ -16,9 +16,6 @@ class HomeView extends AppView<HomeController> {
         child: RefreshIndicator(
           onRefresh: () async => await controller.getPublicRooms(),
           child: CustomScrollView(
-            physics: BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
             slivers: [
               // Header Section
               SliverToBoxAdapter(

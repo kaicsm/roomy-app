@@ -47,7 +47,7 @@ class SignupController extends AppController {
     );
 
     switch (result) {
-      case Sucess():
+      case Success():
         isLoading.value = false;
         return true;
 

@@ -67,8 +67,8 @@ class CreateRoomView extends AppView<CreateRoomController> {
                       title: "Web",
                       subtitle: "Streaming",
                       isSelected:
-                          controller.selectedPlatform.watch(context) == "hulu",
-                      onTap: () => controller.selectedPlatform.value = "hulu",
+                          controller.selectedPlatform.watch(context) == "web",
+                      onTap: () => controller.selectedPlatform.value = "web",
                     ),
                   ],
                 ),

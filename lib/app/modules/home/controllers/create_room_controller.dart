@@ -20,7 +20,7 @@ class CreateRoomController extends AppController {
     );
 
     switch (result) {
-      case Sucess(data: final room):
+      case Success(data: final room):
         return room;
       case Failure():
         return null;

@@ -20,10 +20,18 @@ class UserService {
 
       _log.i(user);
 
-      return Sucess(user);
+      return Success(user);
     } catch (e) {
       _log.e(e);
       return Failure(e.toString());
     }
+  }
+
+  Future<Result<UserModel>> me() async {
+    final response = await _apiService.client.get(
+      '${ApiConfig.userEndpoint}/me',
+    );
+    final user = UserModel.fromJson(response.data);
+    return Success(user);
   }
 }

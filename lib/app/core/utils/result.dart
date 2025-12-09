@@ -1,8 +1,8 @@
 sealed class Result<T> {}
 
-class Sucess<T> extends Result<T> {
+class Success<T> extends Result<T> {
   final T data;
-  Sucess(this.data);
+  Success(this.data);
 }
 
 class Failure<T> extends Result<T> {

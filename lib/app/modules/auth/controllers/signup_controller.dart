@@ -51,9 +51,9 @@ class SignupController extends AppController {
         isLoading.value = false;
         return true;
 
-      case Failure(message: final msg):
+      case Failure(message: final error):
         isLoading.value = false;
-        errorMessage.value = msg;
+        errorMessage.value = error;
         return false;
     }
   }

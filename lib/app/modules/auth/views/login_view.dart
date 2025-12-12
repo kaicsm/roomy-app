@@ -124,7 +124,10 @@ class LoginView extends AppView<LoginController> {
                       // TODO: Implement forgot password
                     },
                     style: ButtonStyle(overlayColor: .all(Colors.transparent)),
-                    child: Text("Forgot Password?"),
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(fontSize: 14),
+                    ),
                   ),
                 ),
 

@@ -26,12 +26,4 @@ class UserService {
       return Failure(e.toString());
     }
   }
-
-  Future<Result<UserModel>> me() async {
-    final response = await _apiService.client.get(
-      '${ApiConfig.userEndpoint}/me',
-    );
-    final user = UserModel.fromJson(response.data);
-    return Success(user);
-  }
 }

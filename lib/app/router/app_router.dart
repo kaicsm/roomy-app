@@ -1,12 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/core/services/auth_service.dart';
 import 'package:roomy/app/modules/auth/views/login_view.dart';
 import 'package:roomy/app/modules/auth/views/signup_view.dart';
-import 'package:roomy/app/modules/home/views/create_room_view.dart';
 import 'package:roomy/app/modules/home/views/home_view.dart';
+import 'package:roomy/app/modules/home/views/platform_webview_view.dart';
+import 'package:roomy/app/modules/home/views/select_platform_view.dart';
 import 'package:roomy/app/modules/profile/views/profile_view.dart';
 import 'package:roomy/app/modules/room/views/room_view.dart';
 import 'package:roomy/app/router/app_routes.dart';
@@ -36,12 +36,12 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRoutes.createRoom,
+        path: AppRoutes.selectPlatform,
         redirect: AuthMiddleware.redirect,
         pageBuilder: (context, state) {
           return CustomTransitionPage(
             key: state.pageKey,
-            child: CreateRoomView(),
+            child: SelectPlatformView(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
                   final tween = Tween(
@@ -56,6 +56,15 @@ class AppRouter {
                 },
           );
         },
+      ),
+
+      GoRoute(
+        path: AppRoutes.platformWebview,
+        builder: (context, state) {
+          final platform = state.pathParameters["platform"]!;
+          return PlatformWebviewView(platform);
+        },
+        redirect: AuthMiddleware.redirect,
       ),
 
       GoRoute(

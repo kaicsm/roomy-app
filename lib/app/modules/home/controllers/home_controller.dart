@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/core/models/room_model.dart';
 import 'package:roomy/app/core/models/user_model.dart';
 import 'package:roomy/app/core/services/room_service.dart';
+import 'package:roomy/app/core/services/storage_service.dart';
 import 'package:roomy/app/core/services/user_service.dart';
 import 'package:roomy/app/core/utils/app_controller.dart';
 import 'package:roomy/app/core/utils/result.dart';
@@ -10,6 +13,7 @@ import 'package:signals/signals_flutter.dart';
 class HomeController extends AppController {
   final _roomService = getIt<RoomService>();
   final _userService = getIt<UserService>();
+  final _storageService = getIt<StorageService>();
 
   final rooms = signal<List<RoomModel>>([]);
   final search = signal('');
@@ -57,6 +61,24 @@ class HomeController extends AppController {
         return user;
       case Failure():
         return null;
+    }
+  }
+
+  UserModel getMe() {
+    // Assuming the user is logged in if they've reached this view
+    return UserModel.fromJson(jsonDecode(_storageService.getString('user')!));
+  }
+
+  String getWeather() {
+    switch (DateTime.now().hour) {
+      case < 6:
+        return 'night';
+      case < 12:
+        return 'morning';
+      case < 18:
+        return 'afternoon';
+      default:
+        return 'evening';
     }
   }
 }

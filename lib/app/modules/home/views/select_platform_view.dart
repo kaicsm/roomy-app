@@ -3,14 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
-import 'package:roomy/app/modules/home/controllers/create_room_controller.dart';
+import 'package:roomy/app/modules/home/controllers/select_platform_controller.dart';
 import 'package:signals/signals_flutter.dart';
 
-class CreateRoomView extends AppView<CreateRoomController> {
-  const CreateRoomView({super.key});
+class SelectPlatformView extends AppView<SelectPlatformController> {
+  const SelectPlatformView({super.key});
 
   @override
-  Widget build(BuildContext context, CreateRoomController controller) {
+  Widget build(BuildContext context, SelectPlatformController controller) {
     return Scaffold(
       appBar: AppBar(title: const Text("New Room")),
       body: SafeArea(
@@ -20,6 +20,14 @@ class CreateRoomView extends AppView<CreateRoomController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  "Select Platform",
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                ),
+                const SizedBox(height: 16),
+
                 GridView.count(
                   crossAxisCount: 2,
                   mainAxisSpacing: 16,
@@ -40,9 +48,11 @@ class CreateRoomView extends AppView<CreateRoomController> {
                     _StreamingCard(
                       icon: SvgPicture.asset(
                         "assets/logos/netflix.svg",
-                        colorFilter: .mode(Colors.grey, .srcIn),
+                        colorFilter: ColorFilter.mode(
+                          Colors.grey,
+                          BlendMode.srcIn,
+                        ),
                       ),
-
                       title: "Netflix",
                       subtitle: "Streaming",
                       isSelected:
@@ -79,13 +89,16 @@ class CreateRoomView extends AppView<CreateRoomController> {
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: () async {
-                      final room = await controller.createRoom();
-                      if (room != null && context.mounted) {
-                        context.pushReplacement('/room/${room.id}');
-                      }
-                    },
-                    child: const Text("Continue"),
+                    onPressed:
+                        controller.selectedPlatform.watch(context).isEmpty
+                        ? null
+                        : () {
+                            context.push(
+                              '/createRoom/webview/${controller.selectedPlatform.value}',
+                            );
+                          },
+
+                    child: Text("Continue"),
                   ),
                 ),
               ],

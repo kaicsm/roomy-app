@@ -1,9 +1,7 @@
 import 'package:roomy/app/core/models/playback_state_model.dart';
 import 'package:roomy/app/core/models/room_model.dart';
 
-enum WsIncomingMessageType { updatePlayback, syncRequest, heartbeat }
-
-enum WsOutgoingMessageType {
+enum WsIncomingMessageType {
   playbackUpdated,
   userJoined,
   userLeft,
@@ -12,67 +10,69 @@ enum WsOutgoingMessageType {
   error,
 }
 
-abstract class WsOutgoingMessage {
-  final WsOutgoingMessageType type;
+enum WsOutgoingMessageType { updatePlayback, syncRequest, heartbeat }
 
-  WsOutgoingMessage(this.type);
+abstract class WsIncomingMessage {
+  final WsIncomingMessageType type;
 
-  factory WsOutgoingMessage.fromJson(Map<String, dynamic> json) {
-    final type = _parseOutgoingType(json['type'] as String);
+  WsIncomingMessage(this.type);
+
+  factory WsIncomingMessage.fromJson(Map<String, dynamic> json) {
+    final type = _parseIncomingType(json['type'] as String);
 
     switch (type) {
-      case WsOutgoingMessageType.playbackUpdated:
+      case WsIncomingMessageType.playbackUpdated:
         return PlaybackUpdatedMessage.fromJson(json);
-      case WsOutgoingMessageType.userJoined:
+      case WsIncomingMessageType.userJoined:
         return UserJoinedMessage.fromJson(json);
-      case WsOutgoingMessageType.userLeft:
+      case WsIncomingMessageType.userLeft:
         return UserLeftMessage.fromJson(json);
-      case WsOutgoingMessageType.hostChanged:
+      case WsIncomingMessageType.hostChanged:
         return HostChangedMessage.fromJson(json);
-      case WsOutgoingMessageType.syncFullState:
+      case WsIncomingMessageType.syncFullState:
         return SyncFullStateMessage.fromJson(json);
-      case WsOutgoingMessageType.error:
+      case WsIncomingMessageType.error:
         return ErrorMessage.fromJson(json);
     }
   }
 
-  static WsOutgoingMessageType _parseOutgoingType(String type) {
+  static WsIncomingMessageType _parseIncomingType(String type) {
     switch (type) {
       case 'PLAYBACK_UPDATED':
-        return WsOutgoingMessageType.playbackUpdated;
+        return WsIncomingMessageType.playbackUpdated;
       case 'USER_JOINED':
-        return WsOutgoingMessageType.userJoined;
+        return WsIncomingMessageType.userJoined;
       case 'USER_LEFT':
-        return WsOutgoingMessageType.userLeft;
+        return WsIncomingMessageType.userLeft;
       case 'HOST_CHANGED':
-        return WsOutgoingMessageType.hostChanged;
+        return WsIncomingMessageType.hostChanged;
       case 'SYNC_FULL_STATE':
-        return WsOutgoingMessageType.syncFullState;
+        return WsIncomingMessageType.syncFullState;
       case 'ERROR':
-        return WsOutgoingMessageType.error;
+        return WsIncomingMessageType.error;
       default:
         throw Exception('Unknown message type: $type');
     }
   }
 }
 
-class PlaybackUpdatedMessage extends WsOutgoingMessage {
+class PlaybackUpdatedMessage extends WsIncomingMessage {
   final PlaybackStateModel payload;
 
   PlaybackUpdatedMessage(this.payload)
-    : super(WsOutgoingMessageType.playbackUpdated);
+    : super(WsIncomingMessageType.playbackUpdated);
 
   factory PlaybackUpdatedMessage.fromJson(Map<String, dynamic> json) {
     return PlaybackUpdatedMessage(PlaybackStateModel.fromJson(json['payload']));
   }
 }
 
-class UserJoinedMessage extends WsOutgoingMessage {
+class UserJoinedMessage extends WsIncomingMessage {
   final String userId;
   final int memberCount;
 
   UserJoinedMessage({required this.userId, required this.memberCount})
-    : super(WsOutgoingMessageType.userJoined);
+    : super(WsIncomingMessageType.userJoined);
 
   factory UserJoinedMessage.fromJson(Map<String, dynamic> json) {
     final payload = json['payload'] as Map<String, dynamic>;
@@ -83,12 +83,12 @@ class UserJoinedMessage extends WsOutgoingMessage {
   }
 }
 
-class UserLeftMessage extends WsOutgoingMessage {
+class UserLeftMessage extends WsIncomingMessage {
   final String userId;
   final int memberCount;
 
   UserLeftMessage({required this.userId, required this.memberCount})
-    : super(WsOutgoingMessageType.userLeft);
+    : super(WsIncomingMessageType.userLeft);
 
   factory UserLeftMessage.fromJson(Map<String, dynamic> json) {
     final payload = json['payload'] as Map<String, dynamic>;
@@ -99,10 +99,10 @@ class UserLeftMessage extends WsOutgoingMessage {
   }
 }
 
-class HostChangedMessage extends WsOutgoingMessage {
+class HostChangedMessage extends WsIncomingMessage {
   final String newHostId;
 
-  HostChangedMessage(this.newHostId) : super(WsOutgoingMessageType.hostChanged);
+  HostChangedMessage(this.newHostId) : super(WsIncomingMessageType.hostChanged);
 
   factory HostChangedMessage.fromJson(Map<String, dynamic> json) {
     final payload = json['payload'] as Map<String, dynamic>;
@@ -110,40 +110,40 @@ class HostChangedMessage extends WsOutgoingMessage {
   }
 }
 
-class SyncFullStateMessage extends WsOutgoingMessage {
+class SyncFullStateMessage extends WsIncomingMessage {
   final RoomFullStateModel payload;
 
   SyncFullStateMessage(this.payload)
-    : super(WsOutgoingMessageType.syncFullState);
+    : super(WsIncomingMessageType.syncFullState);
 
   factory SyncFullStateMessage.fromJson(Map<String, dynamic> json) {
     return SyncFullStateMessage(RoomFullStateModel.fromJson(json['payload']));
   }
 }
 
-class ErrorMessage extends WsOutgoingMessage {
+class ErrorMessage extends WsIncomingMessage {
   final String message;
 
-  ErrorMessage(this.message) : super(WsOutgoingMessageType.error);
+  ErrorMessage(this.message) : super(WsIncomingMessageType.error);
 
   factory ErrorMessage.fromJson(Map<String, dynamic> json) {
     return ErrorMessage(json['payload'] as String);
   }
 }
 
-abstract class WsIncomingMessage {
-  final WsIncomingMessageType type;
+abstract class WsOutgoingMessage {
+  final WsOutgoingMessageType type;
 
-  WsIncomingMessage(this.type);
+  WsOutgoingMessage(this.type);
 
   Map<String, dynamic> toJson();
 }
 
-class UpdatePlaybackMessage extends WsIncomingMessage {
+class UpdatePlaybackMessage extends WsOutgoingMessage {
   final Map<String, dynamic> payload;
 
   UpdatePlaybackMessage(this.payload)
-    : super(WsIncomingMessageType.updatePlayback);
+    : super(WsOutgoingMessageType.updatePlayback);
 
   @override
   Map<String, dynamic> toJson() {
@@ -151,8 +151,8 @@ class UpdatePlaybackMessage extends WsIncomingMessage {
   }
 }
 
-class SyncRequestMessage extends WsIncomingMessage {
-  SyncRequestMessage() : super(WsIncomingMessageType.syncRequest);
+class SyncRequestMessage extends WsOutgoingMessage {
+  SyncRequestMessage() : super(WsOutgoingMessageType.syncRequest);
 
   @override
   Map<String, dynamic> toJson() {
@@ -160,8 +160,8 @@ class SyncRequestMessage extends WsIncomingMessage {
   }
 }
 
-class HeartbeatMessage extends WsIncomingMessage {
-  HeartbeatMessage() : super(WsIncomingMessageType.heartbeat);
+class HeartbeatMessage extends WsOutgoingMessage {
+  HeartbeatMessage() : super(WsOutgoingMessageType.heartbeat);
 
   @override
   Map<String, dynamic> toJson() {

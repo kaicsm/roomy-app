@@ -72,12 +72,8 @@ class HomeView extends AppView<HomeController> {
                                     width: 48,
                                     height: 48,
                                     decoration: BoxDecoration(
-                                      gradient: AppTheme.primaryGradient,
                                       shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: AppTheme.gradientEnd,
-                                        width: 2,
-                                      ),
+                                      color: Colors.grey.withValues(alpha: 0.2),
                                     ),
                                     child: Icon(
                                       Icons.person_rounded,
@@ -91,7 +87,7 @@ class HomeView extends AppView<HomeController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Good evening,",
+                                      "Good ${controller.getWeather()},",
                                       style: TextStyle(
                                         color: Color(0xFFA8A8B3),
                                         fontSize: 13,
@@ -99,7 +95,7 @@ class HomeView extends AppView<HomeController> {
                                       ),
                                     ),
                                     Text(
-                                      "User",
+                                      controller.getMe().username,
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,
@@ -211,7 +207,7 @@ class HomeView extends AppView<HomeController> {
 
       // Floating Action Button
       floatingActionButton: PulsingFab(
-        onPressed: () => context.push(AppRoutes.createRoom),
+        onPressed: () => context.push(AppRoutes.selectPlatform),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

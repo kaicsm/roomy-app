@@ -31,14 +31,20 @@ class RoomService {
 
   Future<Result<RoomModel>> createRoom(
     String name, {
-    int? maxParticipants,
-    bool? isPublic,
+    String? mediaUrl,
+    String? mediaType,
+    bool isPlaying = true,
+    bool isPublic = true,
+    int maxParticipants = 50,
   }) async {
     try {
       final roomData = {
         "name": name,
-        "isPublic": isPublic ?? true,
-        "maxParticipants": maxParticipants ?? 10,
+        if (mediaUrl != null) "mediaUrl": mediaUrl,
+        if (mediaType != null) "mediaType": mediaType,
+        "isPlaying": isPlaying,
+        "isPublic": isPublic,
+        "maxParticipants": maxParticipants,
       };
 
       final response = await _apiService.client.post(

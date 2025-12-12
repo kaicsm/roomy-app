@@ -16,7 +16,7 @@ class ApiService {
   static Future<ApiService> create() async {
     final appDocPath = await getApplicationDocumentsDirectory();
     final cookieJar = PersistCookieJar(
-      storage: FileStorage('$appDocPath/.cookies'),
+      storage: FileStorage('${appDocPath.path}/.cookies'),
     );
 
     final client = Dio(

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/room/controllers/room_controller.dart';
+import 'package:roomy/app/modules/room/widgets/player.dart';
 import 'package:roomy/app/router/app_routes.dart';
 import 'package:signals/signals_flutter.dart';
 
@@ -54,7 +55,7 @@ class RoomView extends AppView<RoomController> {
                     if (currentUrl.isNotEmpty) {
                       return Video(
                         controller: videoCtrl,
-                        controls: MaterialVideoControls,
+                        controls: (state) => playerControls(state, controller),
                       );
                     }
 

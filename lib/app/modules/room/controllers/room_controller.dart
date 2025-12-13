@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:media_kit/media_kit.dart';
@@ -20,10 +21,8 @@ class RoomController extends AppController {
 
   final currentUrl = signal('');
   final currentPosition = signal(Duration.zero);
-  final currentIsPlaying = signal(false);
+  final currentIsPlaying = signal(true);
   final memberCount = signal(0);
-
-  bool _isRemoteUpdate = false;
 
   final connectionStatus = signal('Loading...');
   late final isLoading = computed(
@@ -42,13 +41,14 @@ class RoomController extends AppController {
 
     final result = await _roomService.connectToRoom(roomId);
 
+    _setupPlayerListeners();
+
     switch (result) {
       case Success(data: final channel):
         _channel = channel;
         connectionStatus.set("Connected");
-        _sendMessage(SyncRequestMessage());
         _listenToWebsocket();
-        _setupPlayerListeners();
+        _sendMessage(SyncRequestMessage());
         break;
       case Failure(message: final error):
         connectionStatus.set('Failure: $error');
@@ -57,68 +57,52 @@ class RoomController extends AppController {
   }
 
   void _setupPlayerListeners() {
-    player.stream.playing.listen((playing) {
-      if (_isRemoteUpdate) return;
-
-      currentIsPlaying.set(playing);
-      _sendPlaybackUpdate(isPlaying: currentIsPlaying.value);
-    });
     player.stream.position.listen((position) {
-      if (_isRemoteUpdate) return;
-
-      final diff = (position - currentPosition.value).abs().inSeconds;
-      if (diff > 2) {
-        _sendPlaybackUpdate(currentTime: position.inMilliseconds.toInt());
-      }
       currentPosition.set(position);
+    });
+    player.stream.playing.listen((isPlaying) {
+      currentIsPlaying.set(isPlaying);
     });
   }
 
   void _listenToWebsocket() {
-    _channel!.stream.listen((message) {
+    _channel!.stream.listen((message) async {
       final messageJson = jsonDecode(message);
       final wsMessage = WsIncomingMessage.fromJson(messageJson);
 
-      _handleWsMessage(wsMessage);
+      await _handleWsMessage(wsMessage);
     });
   }
 
   Future<void> _handleWsMessage(WsIncomingMessage message) async {
     switch (message) {
       case SyncFullStateMessage(payload: final state):
-        _handlePlaybackUpdate(state.playbackState!);
+        await _handlePlaybackUpdate(state.playbackState!);
         break;
       case PlaybackUpdatedMessage(payload: final state):
-        _handlePlaybackUpdate(state);
+        await _handlePlaybackUpdate(state);
         break;
     }
   }
 
-  void _handlePlaybackUpdate(PlaybackStateModel state) {
-    _isRemoteUpdate = true;
-
+  Future<void> _handlePlaybackUpdate(PlaybackStateModel state) async {
     final stateMediaUrl = state.mediaUrl;
-    final stateCurrentTime = Duration(milliseconds: state.currentTime.toInt());
+    final stateCurrentTime = Duration(milliseconds: state.currentTime);
     final stateIsPlaying = state.isPlaying;
 
     if (stateMediaUrl != currentUrl.value) {
       currentUrl.set(state.mediaUrl);
-      player.open(Media(currentUrl.value));
+      await player.open(Media(currentUrl.value), play: false);
+      await _waitForPlayerReady();
     }
 
-    final diff = (stateCurrentTime - currentPosition.value).abs().inSeconds;
+    await player.seek(stateCurrentTime);
 
-    if (diff > 2) {
-      currentPosition.set(stateCurrentTime);
-      player.seek(stateCurrentTime);
+    if (stateIsPlaying) {
+      await player.play();
+    } else {
+      await player.pause();
     }
-
-    if (stateIsPlaying != currentIsPlaying.value) {
-      currentIsPlaying.set(stateIsPlaying);
-      stateIsPlaying ? player.play() : player.pause();
-    }
-
-    _isRemoteUpdate = false;
   }
 
   void _sendPlaybackUpdate({
@@ -129,7 +113,7 @@ class RoomController extends AppController {
   }) {
     final payload = {
       if (mediaUrl != null) 'mediaUrl': mediaUrl,
-      if (isPlaying != null) 'isPlaying': isPlaying,
+      'isPlaying': isPlaying ?? currentIsPlaying.value,
       if (currentTime != null) 'currentTime': currentTime,
       if (playbackSpeed != null) 'playbackSpeed': playbackSpeed,
     };
@@ -140,6 +124,32 @@ class RoomController extends AppController {
   void _sendMessage(WsOutgoingMessage message) {
     final messageJson = message.toJson();
     _channel!.sink.add(jsonEncode(messageJson));
+  }
+
+  Future<void> onPlayPause() async {
+    await player.playOrPause();
+
+    final isPlaying = player.state.playing;
+    _sendPlaybackUpdate(isPlaying: isPlaying);
+  }
+
+  Future<void> onSeek(Duration position) async {
+    await player.seek(position);
+    _sendPlaybackUpdate(currentTime: position.inMilliseconds);
+  }
+
+  Future<void> _waitForPlayerReady() async {
+    final completer = Completer<void>();
+    StreamSubscription? bufferingSubscription;
+
+    bufferingSubscription = player.stream.buffering.listen((isBuffering) {
+      if (!isBuffering && !completer.isCompleted) {
+        bufferingSubscription?.cancel();
+        completer.complete();
+      }
+    });
+
+    return completer.future;
   }
 
   @override

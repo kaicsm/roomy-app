@@ -44,11 +44,11 @@ dependencies:
   web_socket_channel: ^3.0.3
   flutter_svg: ^2.2.3
   icons_plus: ^5.0.0
-  flutter_inappwebview: ^6.1.5
   media_kit: ^1.2.3
   media_kit_video: ^2.0.1
   media_kit_libs_video: ^1.0.7
   shared_preferences: ^2.5.4
+  flutter_inappwebview: ^6.1.5
 
 dev_dependencies:
   flutter_test:

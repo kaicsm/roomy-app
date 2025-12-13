@@ -2,7 +2,7 @@ class PlaybackStateModel {
   final String mediaUrl;
   final String mediaType;
   final bool isPlaying;
-  final double currentTime;
+  final int currentTime;
   final double playbackSpeed;
   final String lastUpdatedBy;
   final DateTime lastUpdated;
@@ -22,7 +22,7 @@ class PlaybackStateModel {
       mediaUrl: json['mediaUrl'] as String,
       mediaType: json['mediaType'] as String,
       isPlaying: json['isPlaying'] as bool,
-      currentTime: (json['currentTime'] as num).toDouble(),
+      currentTime: json['currentTime'] as int,
       playbackSpeed: (json['playbackSpeed'] as num).toDouble(),
       lastUpdatedBy: json['lastUpdatedBy'] as String,
       lastUpdated: DateTime.parse(json['lastUpdated'] as String),
@@ -45,7 +45,7 @@ class PlaybackStateModel {
     String? mediaUrl,
     String? mediaType,
     bool? isPlaying,
-    double? currentTime,
+    int? currentTime,
     double? playbackSpeed,
     String? lastUpdatedBy,
     DateTime? lastUpdated,

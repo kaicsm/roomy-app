@@ -88,8 +88,9 @@ class RoomService {
         Uri.parse(ApiConfig.baseUrl),
       )).firstWhere((cookie) => cookie.name == 'authToken').value;
 
-      final url =
-          'ws://${ApiConfig.baseUrl.replaceFirst('http://', '').replaceFirst('https://', '')}/rooms/$roomId/ws?authToken=$authCookie';
+      final url = ApiConfig.baseUrl.startsWith('https')
+          ? 'wss://${ApiConfig.baseUrl.replaceFirst('https://', '')}/rooms/$roomId/ws?authToken=$authCookie'
+          : 'ws://${ApiConfig.baseUrl.replaceFirst('http://', '')}/rooms/$roomId/ws?authToken=$authCookie';
 
       _log.i(url);
 

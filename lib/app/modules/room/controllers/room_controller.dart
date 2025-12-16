@@ -49,6 +49,7 @@ class RoomController extends AppController {
         connectionStatus.set("Connected");
         _listenToWebsocket();
         _sendMessage(SyncRequestMessage());
+        _startHeartbeat();
         break;
       case Failure(message: final error):
         connectionStatus.set('Failure: $error');
@@ -63,6 +64,13 @@ class RoomController extends AppController {
     player.stream.playing.listen((isPlaying) {
       currentIsPlaying.set(isPlaying);
     });
+  }
+
+  void _startHeartbeat() {
+    Timer.periodic(
+      Duration(seconds: 30),
+      (_) => _sendMessage(HeartbeatMessage()),
+    );
   }
 
   void _listenToWebsocket() {
@@ -114,7 +122,7 @@ class RoomController extends AppController {
     final payload = {
       if (mediaUrl != null) 'mediaUrl': mediaUrl,
       'isPlaying': isPlaying ?? currentIsPlaying.value,
-      'currentTime': currentTime ?? currentPosition.value.inMilliseconds,
+      if (currentTime != null) 'currentTime': currentTime,
       if (playbackSpeed != null) 'playbackSpeed': playbackSpeed,
     };
 

@@ -137,7 +137,9 @@ class SelectPlatformView extends AppView<SelectPlatformController> {
                                     }
                             : () =>
                                   context.push('/createRoom/webview/$platform'),
-                        child: Text("Continue"),
+                        child: controller.isLoading.watch(context)
+                            ? CircularProgressIndicator()
+                            : Text("Continue"),
                       );
                     },
                   ),

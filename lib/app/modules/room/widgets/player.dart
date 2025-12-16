@@ -29,9 +29,15 @@ class _PlayerControlsState extends State<_PlayerControls> with SignalsMixin {
   late final playing = createSignal(false);
   late final buffering = createSignal(false);
 
+  final List<StreamSubscription> _subscriptions = [];
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    _clearSubscriptions();
+
+    final player = controller(context).player;
 
     position.value = controller(context).player.state.position;
     duration.value = controller(context).player.state.duration;
@@ -39,26 +45,36 @@ class _PlayerControlsState extends State<_PlayerControls> with SignalsMixin {
     playing.value = controller(context).player.state.playing;
     buffering.value = controller(context).player.state.buffering;
 
-    controller(context).player.stream.position.listen((event) {
-      position.value = event;
-    });
-    controller(context).player.stream.duration.listen((event) {
-      duration.value = event;
-    });
-    controller(context).player.stream.buffer.listen((event) {
-      buffer.value = event;
-    });
-    controller(context).player.stream.playing.listen((event) {
-      playing.value = event;
-    });
-    controller(context).player.stream.buffering.listen((event) {
-      buffering.value = event;
-    });
+    _subscriptions.addAll([
+      player.stream.position.listen((event) {
+        position.value = event;
+      }),
+      player.stream.duration.listen((event) {
+        duration.value = event;
+      }),
+      player.stream.buffer.listen((event) {
+        buffer.value = event;
+      }),
+      player.stream.playing.listen((event) {
+        playing.value = event;
+      }),
+      player.stream.buffering.listen((event) {
+        buffering.value = event;
+      }),
+    ]);
+  }
+
+  void _clearSubscriptions() {
+    for (final s in _subscriptions) {
+      s.cancel();
+    }
+    _subscriptions.clear();
   }
 
   @override
   void dispose() {
     _hideTimer?.cancel();
+    _clearSubscriptions();
     super.dispose();
   }
 
@@ -124,126 +140,119 @@ class _PlayerControlsState extends State<_PlayerControls> with SignalsMixin {
         children: [
           // Buffering Indicator
           if (buffering.watch(context))
-            Center(
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.6),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: CircularProgressIndicator(
-                  color: theme.colorScheme.primary,
-                  strokeWidth: 2,
-                ),
-              ),
-            ),
+            Center(child: CircularProgressIndicator()),
 
           // Controls Overlay
-          AnimatedOpacity(
-            opacity: visible.watch(context) ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 300),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withValues(alpha: 0.7),
-                    Colors.transparent,
-                    Colors.transparent,
-                    Colors.black.withValues(alpha: 0.8),
-                  ],
-                  stops: const [0.0, 0.3, 0.7, 1.0],
-                ),
-              ),
-              child: Stack(
-                children: [
-                  // Control Buttons
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _ControlButton(
-                          icon: Icons.replay_10_rounded,
-                          onPressed: _seekBackward,
-                          size: 36,
-                        ),
-                        const SizedBox(width: 24),
-                        _ControlButton(
-                          icon: playing.watch(context)
-                              ? Icons.pause_rounded
-                              : Icons.play_arrow_rounded,
-                          onPressed: _togglePlayPause,
-                          size: 52,
-                          isPrimary: true,
-                        ),
-                        const SizedBox(width: 24),
-                        _ControlButton(
-                          icon: Icons.forward_10_rounded,
-                          onPressed: _seekForward,
-                          size: 36,
-                        ),
-                      ],
-                    ),
+          IgnorePointer(
+            ignoring: !visible.watch(context),
+            child: AnimatedOpacity(
+              opacity: visible.watch(context) ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 300),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withValues(alpha: 0.7),
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.black.withValues(alpha: 0.8),
+                    ],
+                    stops: const [0.0, 0.3, 0.7, 1.0],
                   ),
-
-                  // Seek Bar & Bottom Info
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                ),
+                child: Stack(
+                  children: [
+                    // Control Buttons
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '${position.watch(context).label(reference: duration.value)} / ${duration.watch(context).label(reference: duration.value)}',
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  color: theme.colorScheme.onSurface,
-                                  fontSize: 11,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  toggleFullscreen(context);
-                                  _resetHideTimer();
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(6),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withValues(alpha: 0.5),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Icon(
-                                    isFullscreen(context)
-                                        ? Icons.fullscreen_exit_rounded
-                                        : Icons.fullscreen_rounded,
-                                    color: theme.colorScheme.onSurface,
-                                    size: 18,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          _ControlButton(
+                            icon: Icons.replay_10_rounded,
+                            onPressed: _seekBackward,
+                            size: 36,
                           ),
-                          _SeekBar(
-                            position: position.watch(context),
-                            duration: duration.watch(context),
-                            buffer: buffer.watch(context),
-                            positionPercent: _positionPercent,
-                            bufferPercent: _bufferPercent,
-                            onSeek: (percent) {
-                              final newPos = duration.value * percent;
-                              widget.roomController.onSeek(newPos);
-                              _resetHideTimer();
-                            },
+                          const SizedBox(width: 24),
+                          _ControlButton(
+                            icon: playing.watch(context)
+                                ? Icons.pause_rounded
+                                : Icons.play_arrow_rounded,
+                            onPressed: _togglePlayPause,
+                            size: 52,
+                            isPrimary: true,
+                          ),
+                          const SizedBox(width: 24),
+                          _ControlButton(
+                            icon: Icons.forward_10_rounded,
+                            onPressed: _seekForward,
+                            size: 36,
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
+
+                    // Seek Bar & Bottom Info
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${position.watch(context).label(reference: duration.value)} / ${duration.watch(context).label(reference: duration.value)}',
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    color: theme.colorScheme.onSurface,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    toggleFullscreen(context);
+                                    _resetHideTimer();
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.5,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Icon(
+                                      isFullscreen(context)
+                                          ? Icons.fullscreen_exit_rounded
+                                          : Icons.fullscreen_rounded,
+                                      color: theme.colorScheme.onSurface,
+                                      size: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            _SeekBar(
+                              position: position.watch(context),
+                              duration: duration.watch(context),
+                              buffer: buffer.watch(context),
+                              positionPercent: _positionPercent,
+                              bufferPercent: _bufferPercent,
+                              onSeek: (percent) {
+                                final newPos = duration.value * percent;
+                                widget.roomController.onSeek(newPos);
+                                _resetHideTimer();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

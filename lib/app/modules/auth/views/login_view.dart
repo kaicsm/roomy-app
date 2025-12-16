@@ -150,10 +150,7 @@ class LoginView extends AppView<LoginController> {
                         ? SizedBox(
                             width: 24,
                             height: 24,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2.5,
-                            ),
+                            child: CircularProgressIndicator(),
                           )
                         : Text(
                             "Log In",

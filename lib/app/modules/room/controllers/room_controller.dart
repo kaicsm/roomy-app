@@ -29,6 +29,9 @@ class RoomController extends AppController {
     () => connectionStatus.value.toLowerCase().contains('loading...'),
   );
 
+  final List<StreamSubscription> _subscriptions = [];
+  Timer? _heartbeatTimer;
+
   late final Player player;
   late final VideoController videoController;
 
@@ -58,28 +61,34 @@ class RoomController extends AppController {
   }
 
   void _setupPlayerListeners() {
-    player.stream.position.listen((position) {
-      currentPosition.set(position);
-    });
-    player.stream.playing.listen((isPlaying) {
-      currentIsPlaying.set(isPlaying);
-    });
+    _subscriptions.add(
+      player.stream.position.listen((position) {
+        currentPosition.set(position);
+      }),
+    );
+    _subscriptions.add(
+      player.stream.playing.listen((isPlaying) {
+        currentIsPlaying.set(isPlaying);
+      }),
+    );
   }
 
   void _startHeartbeat() {
-    Timer.periodic(
+    _heartbeatTimer = Timer.periodic(
       Duration(seconds: 30),
       (_) => _sendMessage(HeartbeatMessage()),
     );
   }
 
   void _listenToWebsocket() {
-    _channel!.stream.listen((message) async {
-      final messageJson = jsonDecode(message);
-      final wsMessage = WsIncomingMessage.fromJson(messageJson);
+    _subscriptions.add(
+      _channel!.stream.listen((message) async {
+        final messageJson = jsonDecode(message);
+        final wsMessage = WsIncomingMessage.fromJson(messageJson);
 
-      await _handleWsMessage(wsMessage);
-    });
+        await _handleWsMessage(wsMessage);
+      }),
+    );
   }
 
   Future<void> _handleWsMessage(WsIncomingMessage message) async {
@@ -162,6 +171,13 @@ class RoomController extends AppController {
 
   @override
   void dispose() {
+    _heartbeatTimer?.cancel();
+
+    for (final s in _subscriptions) {
+      s.cancel();
+    }
+    _subscriptions.clear();
+
     player.dispose();
     currentUrl.dispose();
     currentPosition.dispose();

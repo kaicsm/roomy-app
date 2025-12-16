@@ -277,6 +277,7 @@ class AppTheme {
 
     progressIndicatorTheme: ProgressIndicatorThemeData(
       color: _vibrantPurple,
+      strokeWidth: 2,
       circularTrackColor: _darkGray,
       linearTrackColor: _darkGray,
     ),

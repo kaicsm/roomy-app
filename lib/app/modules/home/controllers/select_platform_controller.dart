@@ -12,7 +12,7 @@ class SelectPlatformController extends AppController {
   final selectedPlatform = signal('');
   final isLoading = signal(false);
   final mediaUrl = signal<String?>(null);
-  
+
   final mediaUrlController = TextEditingController();
 
   SelectPlatformController() {
@@ -22,6 +22,8 @@ class SelectPlatformController extends AppController {
   }
 
   Future<RoomModel?> createRoom() async {
+    isLoading.set(true);
+
     final result = await _roomService.createRoom(
       "Room",
       mediaUrl: mediaUrlController.text,
@@ -29,8 +31,10 @@ class SelectPlatformController extends AppController {
 
     switch (result) {
       case Success(data: final room):
+        isLoading.set(false);
         return room;
       case Failure():
+        isLoading.set(false);
         return null;
     }
   }

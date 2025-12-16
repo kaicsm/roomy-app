@@ -114,7 +114,7 @@ class RoomController extends AppController {
     final payload = {
       if (mediaUrl != null) 'mediaUrl': mediaUrl,
       'isPlaying': isPlaying ?? currentIsPlaying.value,
-      if (currentTime != null) 'currentTime': currentTime,
+      'currentTime': currentTime ?? currentPosition.value.inMilliseconds,
       if (playbackSpeed != null) 'playbackSpeed': playbackSpeed,
     };
 

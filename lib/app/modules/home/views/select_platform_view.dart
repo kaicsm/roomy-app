@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -85,20 +86,60 @@ class SelectPlatformView extends AppView<SelectPlatformController> {
 
                 const SizedBox(height: 24),
 
+                TextField(
+                  controller: controller.mediaUrlController,
+                  decoration: InputDecoration(
+                    hintText: "Or paste your media URL here",
+                    suffixIcon: IconButton(
+                      onPressed: () async {
+                        final data = await Clipboard.getData(
+                          Clipboard.kTextPlain,
+                        );
+                        if (data?.text != null) {
+                          final text = data!.text!;
+                          controller.mediaUrlController.text = text;
+                          controller.mediaUrlController.selection =
+                              TextSelection.fromPosition(
+                                TextPosition(offset: text.length),
+                              );
+                        }
+                      },
+                      icon: Icon(Icons.paste),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
                 SizedBox(
                   width: double.infinity,
                   height: 56,
-                  child: ElevatedButton(
-                    onPressed:
-                        controller.selectedPlatform.watch(context).isEmpty
-                        ? null
-                        : () {
-                            context.push(
-                              '/createRoom/webview/${controller.selectedPlatform.value}',
-                            );
-                          },
+                  child: Builder(
+                    builder: (context) {
+                      final platform = controller.selectedPlatform.watch(
+                        context,
+                      );
+                      final mediaUrl = controller.mediaUrl.watch(context);
 
-                    child: Text("Continue"),
+                      return ElevatedButton(
+                        onPressed: platform.isEmpty
+                            ? mediaUrl == null || mediaUrl.isEmpty
+                                  ? null
+                                  : () async {
+                                      final room = await controller
+                                          .createRoom();
+
+                                      if (context.mounted && room != null) {
+                                        context.pushReplacement(
+                                          '/room/${room.id}',
+                                        );
+                                      }
+                                    }
+                            : () =>
+                                  context.push('/createRoom/webview/$platform'),
+                        child: Text("Continue"),
+                      );
+                    },
                   ),
                 ),
               ],

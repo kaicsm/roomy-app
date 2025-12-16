@@ -20,14 +20,14 @@ class _PlayerControls extends StatefulWidget {
 }
 
 class _PlayerControlsState extends State<_PlayerControls> with SignalsMixin {
-  late final visible = signal(false);
+  late final visible = createSignal(false);
   Timer? _hideTimer;
 
-  late final position = signal(Duration.zero);
-  late final duration = signal(Duration.zero);
-  late final buffer = signal(Duration.zero);
-  late final playing = signal(false);
-  late final buffering = signal(false);
+  late final position = createSignal(Duration.zero);
+  late final duration = createSignal(Duration.zero);
+  late final buffer = createSignal(Duration.zero);
+  late final playing = createSignal(false);
+  late final buffering = createSignal(false);
 
   @override
   void didChangeDependencies() {

@@ -131,15 +131,15 @@ class AppTheme {
       fillColor: _cardBg,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: BorderSide(color: _darkGray),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+        borderSide: BorderSide(color: _darkGray),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: _vibrantPurple, width: 2),
+        borderSide: BorderSide(color: _vibrantPurple),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),

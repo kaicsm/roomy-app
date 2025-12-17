@@ -28,11 +28,11 @@ class RoomView extends AppView<RoomController> {
         ),
         title: TitleWidget('Room'),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Center(
-              child: Text(controller.connectionStatus.watch(context)),
-            ),
+          IconButton(
+            onPressed: () {
+              // TODO: Implement room members drawer
+            },
+            icon: Icon(Icons.people),
           ),
         ],
       ),

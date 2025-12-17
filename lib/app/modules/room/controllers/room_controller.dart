@@ -99,6 +99,12 @@ class RoomController extends AppController {
       case PlaybackUpdatedMessage(payload: final state):
         await _handlePlaybackUpdate(state);
         break;
+      case UserJoinedMessage(memberCount: final memberCount):
+        _handleUserJoined(memberCount);
+        break;
+      case UserLeftMessage(memberCount: final memberCount):
+        _handleUserLeft(memberCount);
+        break;
     }
   }
 
@@ -120,6 +126,14 @@ class RoomController extends AppController {
     } else {
       await player.pause();
     }
+  }
+
+  void _handleUserJoined(int memberCount) {
+    this.memberCount.set(memberCount);
+  }
+
+  void _handleUserLeft(int memberCount) {
+    this.memberCount.set(memberCount);
   }
 
   void _sendPlaybackUpdate({

@@ -11,172 +11,78 @@ class HomeView extends AppView<HomeController> {
 
   @override
   Widget build(BuildContext context, HomeController controller) {
+    final isSearching = controller.isSearching.watch(context);
+
     return Scaffold(
+      appBar: AppBar(
+        leading: isSearching
+            ? null
+            : Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: GestureDetector(
+                  onTap: () => context.push(AppRoutes.profile),
+                  child: CircleAvatar(
+                    backgroundColor: const Color(0xFF252637),
+                    child: const Icon(
+                      Icons.person_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ),
+        title: isSearching
+            ? TextField(
+                autofocus: true,
+                onChanged: controller.search.set,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  hintText: "Search watch parties...",
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Color(0xFF6B6B7B)),
+                ),
+              )
+            : const Text("Roomy"),
+        actions: [
+          if (isSearching)
+            IconButton(
+              onPressed: () {
+                controller.isSearching.set(false);
+                controller.search.set('');
+              },
+              icon: const Icon(Icons.close_rounded),
+            )
+          else
+            IconButton(
+              onPressed: () => controller.isSearching.set(true),
+              icon: const Icon(Icons.search_rounded),
+              style: IconButton.styleFrom(
+                backgroundColor: const Color(0xFF252637),
+                shape: const CircleBorder(),
+              ),
+            ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async => await controller.getPublicRooms(),
           child: CustomScrollView(
             slivers: [
-              // Header Section
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Top Bar with Avatar and Actions
-                      if (controller.isSearching.watch(context))
-                        // Search Bar Expanded
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                autofocus: true,
-                                onChanged: controller.search.set,
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  hintText: "Search watch parties...",
-                                  prefixIcon: Icon(Icons.search_rounded),
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 16,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            IconButton(
-                              onPressed: () {
-                                controller.isSearching.set(false);
-                                controller.search.set('');
-                              },
-                              icon: Icon(Icons.close_rounded, size: 26),
-                              style: IconButton.styleFrom(
-                                backgroundColor: Color(0xFF252637),
-                                foregroundColor: Colors.white,
-                              ),
-                            ),
-                          ],
-                        )
-                      else
-                        // Normal Header
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Avatar and Greeting
-                            Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () => context.push(AppRoutes.profile),
-                                  child: Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF252637),
-                                    ),
-                                    child: Icon(
-                                      Icons.person_rounded,
-                                      color: Colors.white,
-                                      size: 24,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Good ${controller.getWeather()},",
-                                      style: TextStyle(
-                                        color: Color(0xFFA8A8B3),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      controller.user.username,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-
-                            // Action Icons
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () =>
-                                      controller.isSearching.set(true),
-                                  icon: Icon(Icons.search_rounded, size: 26),
-                                  style: IconButton.styleFrom(
-                                    backgroundColor: Color(0xFF252637),
-                                    foregroundColor: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      const SizedBox(height: 32),
-                    ],
-                  ),
-                ),
-              ),
               // Rooms List
               controller.filteredRooms.watch(context).isEmpty
-                  ? SliverFillRemaining(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 120,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF252637),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.movie_outlined,
-                                size: 56,
-                                color: Color(0xFF6B6B7B),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            Text(
-                              "No watch parties yet",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "Create one and invite your friends!",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFF6B6B7B),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                  ? const SliverFillRemaining(
+                      child: Center(child: _EmptyState()),
                     )
                   : SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(24, 0, 24, 100),
+                      padding: const EdgeInsets.fromLTRB(24, 16, 24, 100),
                       sliver: SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (context, index) {
-                            final room = controller.filteredRooms.watch(
+                            final rooms = controller.filteredRooms.watch(
                               context,
-                            )[index];
+                            );
+                            final room = rooms[index];
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 16),
                               child: FutureBuilder(
@@ -204,12 +110,49 @@ class HomeView extends AppView<HomeController> {
           ),
         ),
       ),
-
-      // Floating Action Button
       floatingActionButton: PulsingFab(
         onPressed: () => context.push(AppRoutes.selectPlatform),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 120,
+          height: 120,
+          decoration: const BoxDecoration(
+            color: Color(0xFF252637),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            Icons.movie_outlined,
+            size: 56,
+            color: Color(0xFF6B6B7B),
+          ),
+        ),
+        const SizedBox(height: 24),
+        const Text(
+          "No watch parties yet",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          "Create one and invite your friends!",
+          style: TextStyle(fontSize: 14, color: Color(0xFF6B6B7B)),
+        ),
+      ],
     );
   }
 }

@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/core/models/room_model.dart';
 import 'package:roomy/app/core/models/user_model.dart';
 import 'package:roomy/app/core/services/room_service.dart';
-import 'package:roomy/app/core/services/storage_service.dart';
 import 'package:roomy/app/core/services/user_service.dart';
 import 'package:roomy/app/core/utils/app_controller.dart';
 import 'package:roomy/app/core/utils/result.dart';
@@ -13,7 +10,6 @@ import 'package:signals/signals_flutter.dart';
 class HomeController extends AppController {
   final _roomService = getIt<RoomService>();
   final _userService = getIt<UserService>();
-  final _storageService = getIt<StorageService>();
 
   final rooms = signal<List<RoomModel>>([]);
   final search = signal('');
@@ -30,11 +26,8 @@ class HomeController extends AppController {
     }).toList();
   });
 
-  late final UserModel user;
-
   @override
   Future<void> init() async {
-    user = UserModel.fromJson(jsonDecode(_storageService.getString('user')!));
     await getPublicRooms();
   }
 

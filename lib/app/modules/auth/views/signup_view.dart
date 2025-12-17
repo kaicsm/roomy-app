@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:roomy/app/config/app_theme.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/auth/controllers/signup_controller.dart';
 import 'package:roomy/app/router/app_routes.dart';
+import 'package:roomy/app/widgets/title_widget.dart';
 import 'package:signals/signals_flutter.dart';
 
 class SignupView extends AppView<SignupController> {
@@ -12,16 +12,7 @@ class SignupView extends AppView<SignupController> {
   @override
   Widget build(BuildContext context, SignupController controller) {
     return Scaffold(
-      appBar: AppBar(
-        title: ShaderMask(
-          shaderCallback: (bounds) => LinearGradient(
-            colors: [AppTheme.gradientStart, AppTheme.gradientEnd],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height)),
-          child: const Text('Roomy'),
-        ),
-      ),
+      appBar: AppBar(title: TitleWidget('Roomy')),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

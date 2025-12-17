@@ -4,6 +4,7 @@ import 'package:roomy/app/config/app_theme.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/home/controllers/home_controller.dart';
 import 'package:roomy/app/router/app_routes.dart';
+import 'package:roomy/app/widgets/title_widget.dart';
 import 'package:signals/signals_flutter.dart';
 
 class HomeView extends AppView<HomeController> {
@@ -42,17 +43,7 @@ class HomeView extends AppView<HomeController> {
                   hintStyle: TextStyle(color: Color(0xFF6B6B7B)),
                 ),
               )
-            : ShaderMask(
-                shaderCallback: (bounds) =>
-                    LinearGradient(
-                      colors: [AppTheme.gradientStart, AppTheme.gradientEnd],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ).createShader(
-                      Rect.fromLTRB(0, 0, bounds.width, bounds.height),
-                    ),
-                child: const Text('Roomy'),
-              ),
+            : TitleWidget('Roomy'),
         actions: [
           if (isSearching)
             IconButton(

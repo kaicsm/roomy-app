@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/profile/controllers/profile_controller.dart';
+import 'package:roomy/app/widgets/title_widget.dart';
 
 class ProfileView extends AppView<ProfileController> {
   const ProfileView({super.key});
@@ -9,7 +10,7 @@ class ProfileView extends AppView<ProfileController> {
   Widget build(BuildContext context, ProfileController controller) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile"),
+        title: TitleWidget('Profile'),
         actions: [
           IconButton(
             onPressed: () async => await controller.logout(),
@@ -35,7 +36,7 @@ class ProfileView extends AppView<ProfileController> {
                   size: 72,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Text(
                 '@${controller.user.username}',
                 style: TextStyle(

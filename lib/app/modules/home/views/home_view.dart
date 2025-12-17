@@ -73,7 +73,7 @@ class HomeView extends AppView<HomeController> {
                                     height: 48,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.grey.withValues(alpha: 0.2),
+                                      color: Color(0xFF252637),
                                     ),
                                     child: Icon(
                                       Icons.person_rounded,
@@ -95,7 +95,7 @@ class HomeView extends AppView<HomeController> {
                                       ),
                                     ),
                                     Text(
-                                      controller.getMe().username,
+                                      controller.user.username,
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,

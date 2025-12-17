@@ -8,10 +8,45 @@ class ProfileView extends AppView<ProfileController> {
   @override
   Widget build(BuildContext context, ProfileController controller) {
     return Scaffold(
-      appBar: AppBar(title: Text("Profile")),
-      body: FilledButton(
-        onPressed: () async => await controller.logout(),
-        child: Text("Logout"),
+      appBar: AppBar(
+        title: Text("Profile"),
+        actions: [
+          IconButton(
+            onPressed: () => controller.logout(),
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              const SizedBox(height: 32),
+              Container(
+                width: 144,
+                height: 144,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF252637),
+                ),
+                child: Icon(
+                  Icons.person_rounded,
+                  color: Colors.white,
+                  size: 72,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                '@${controller.user.username}',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

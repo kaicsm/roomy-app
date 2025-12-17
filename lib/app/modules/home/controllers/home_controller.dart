@@ -30,8 +30,11 @@ class HomeController extends AppController {
     }).toList();
   });
 
+  late final UserModel user;
+
   @override
   Future<void> init() async {
+    user = UserModel.fromJson(jsonDecode(_storageService.getString('user')!));
     await getPublicRooms();
   }
 
@@ -62,11 +65,6 @@ class HomeController extends AppController {
       case Failure():
         return null;
     }
-  }
-
-  UserModel getMe() {
-    // Assuming the user is logged in if they've reached this view
-    return UserModel.fromJson(jsonDecode(_storageService.getString('user')!));
   }
 
   String getWeather() {

@@ -19,7 +19,7 @@ class LoginView extends AppView<LoginController> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height)),
-          child: Text('Roomy'),
+          child: const Text('Roomy'),
         ),
       ),
       body: SafeArea(

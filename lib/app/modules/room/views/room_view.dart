@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:roomy/app/config/app_theme.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/room/controllers/room_controller.dart';
 import 'package:roomy/app/modules/room/widgets/player.dart';
@@ -25,7 +26,14 @@ class RoomView extends AppView<RoomController> {
           onPressed: () => context.go(AppRoutes.home),
           icon: const Icon(Icons.arrow_back),
         ),
-        title: const Text('Roomy'),
+        title: ShaderMask(
+          shaderCallback: (bounds) => LinearGradient(
+            colors: [AppTheme.gradientStart, AppTheme.gradientEnd],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height)),
+          child: const Text('Roomy'),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),

@@ -42,7 +42,17 @@ class HomeView extends AppView<HomeController> {
                   hintStyle: TextStyle(color: Color(0xFF6B6B7B)),
                 ),
               )
-            : const Text("Roomy"),
+            : ShaderMask(
+                shaderCallback: (bounds) =>
+                    LinearGradient(
+                      colors: [AppTheme.gradientStart, AppTheme.gradientEnd],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ).createShader(
+                      Rect.fromLTRB(0, 0, bounds.width, bounds.height),
+                    ),
+                child: const Text('Roomy'),
+              ),
         actions: [
           if (isSearching)
             IconButton(

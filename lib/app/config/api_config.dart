@@ -5,7 +5,7 @@ abstract class ApiConfig {
   static String version = 'v1';
 
   static String baseUrl = kDebugMode
-      ? '${EnvConfig.serverUrlDebug}/$version'
+      ? '${EnvConfig.serverDebugUrl}/$version'
       : '${EnvConfig.serverUrl}/$version';
 
   static String authEndpoint = '/auth';

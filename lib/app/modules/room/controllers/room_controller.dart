@@ -109,7 +109,7 @@ class RoomController extends AppController {
 
     if (stateMediaUrl != currentUrl.value) {
       currentUrl.set(state.mediaUrl);
-      await player.open(Media(currentUrl.value), play: false);
+      await player.open(Media(currentUrl.value));
       await _waitForPlayerReady();
     }
 

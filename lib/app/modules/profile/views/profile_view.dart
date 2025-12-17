@@ -12,7 +12,7 @@ class ProfileView extends AppView<ProfileController> {
         title: Text("Profile"),
         actions: [
           IconButton(
-            onPressed: () => controller.logout(),
+            onPressed: () async => await controller.logout(),
             icon: Icon(Icons.logout),
           ),
         ],

@@ -129,27 +129,19 @@ class LoginView extends AppView<LoginController> {
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: controller.isLoading.watch(context)
-                        ? null
-                        : () async {
-                            final response = await controller.login();
-                            if (response && context.mounted) {
-                              context.go(AppRoutes.home);
-                            }
-                          },
+                    onPressed: () async {
+                      final response = await controller.login();
+                      if (response && context.mounted) {
+                        context.go(AppRoutes.home);
+                      }
+                    },
                     child: controller.isLoading.watch(context)
                         ? SizedBox(
                             width: 24,
                             height: 24,
                             child: CircularProgressIndicator(),
                           )
-                        : Text(
-                            "Log In",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                        : Text("Log In"),
                   ),
                 ),
 

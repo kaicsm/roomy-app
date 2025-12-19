@@ -29,6 +29,7 @@ class SelectPlatformView extends AppView<SelectPlatformController> {
                 ),
                 const SizedBox(height: 16),
 
+                // Platform Grid
                 GridView.count(
                   crossAxisCount: 2,
                   mainAxisSpacing: 16,
@@ -86,6 +87,7 @@ class SelectPlatformView extends AppView<SelectPlatformController> {
 
                 const SizedBox(height: 24),
 
+                // URL Text Field
                 TextField(
                   controller: controller.mediaUrlController,
                   onTap: () => controller.clearPlatformSelection(),
@@ -112,6 +114,7 @@ class SelectPlatformView extends AppView<SelectPlatformController> {
 
                 const SizedBox(height: 24),
 
+                // Continue Button
                 SizedBox(
                   width: double.infinity,
                   height: 56,
@@ -139,7 +142,11 @@ class SelectPlatformView extends AppView<SelectPlatformController> {
                             : () =>
                                   context.push('/createRoom/webview/$platform'),
                         child: controller.isLoading.watch(context)
-                            ? CircularProgressIndicator()
+                            ? SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(),
+                              )
                             : Text("Continue"),
                       );
                     },

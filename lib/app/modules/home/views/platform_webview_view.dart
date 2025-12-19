@@ -3,7 +3,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/home/controllers/platform_webview_controller.dart';
-import 'package:roomy/app/widgets/title_widget.dart';
 import 'package:signals/signals_flutter.dart';
 
 class PlatformWebviewView extends AppView<PlatformWebviewController> {
@@ -20,7 +19,7 @@ class PlatformWebviewView extends AppView<PlatformWebviewController> {
   Widget build(BuildContext context, PlatformWebviewController controller) {
     return Scaffold(
       appBar: AppBar(
-        title: TitleWidget(_getPlatformName(platform)),
+        title: Text(_getPlatformName(platform)),
         actions: [
           IconButton(
             onPressed: controller.canGoBack.watch(context)

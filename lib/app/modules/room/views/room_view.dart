@@ -5,7 +5,6 @@ import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/room/controllers/room_controller.dart';
 import 'package:roomy/app/router/app_routes.dart';
 import 'package:roomy/app/widgets/player_widget.dart';
-import 'package:roomy/app/widgets/title_widget.dart';
 import 'package:signals/signals_flutter.dart';
 
 class RoomView extends AppView<RoomController> {
@@ -26,7 +25,7 @@ class RoomView extends AppView<RoomController> {
           onPressed: () => context.go(AppRoutes.home),
           icon: const Icon(Icons.arrow_back),
         ),
-        title: TitleWidget('Room'),
+        title: const Text('Room'),
         actions: [
           IconButton(
             onPressed: () {

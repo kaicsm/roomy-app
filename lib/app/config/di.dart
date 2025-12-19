@@ -27,15 +27,8 @@ Future<void> setupDependencies() async {
     dependsOn: [ApiService],
   );
 
-  getIt.registerSingletonWithDependencies(
-    () => UserService(),
-    dependsOn: [ApiService],
-  );
-
-  getIt.registerSingletonWithDependencies<RoomService>(
-    () => RoomService(),
-    dependsOn: [ApiService],
-  );
+  getIt.registerLazySingleton<UserService>(() => UserService());
+  getIt.registerLazySingleton<RoomService>(() => RoomService());
 
   getIt.registerFactory<HomeController>(() => HomeController());
   getIt.registerFactory<LoginController>(() => LoginController());
@@ -45,5 +38,7 @@ Future<void> setupDependencies() async {
     () => SelectPlatformController(),
   );
 
-  await getIt.allReady();
+  await getIt.isReady<StorageService>();
+  await getIt.isReady<ApiService>();
+  await getIt.isReady<AuthService>();
 }

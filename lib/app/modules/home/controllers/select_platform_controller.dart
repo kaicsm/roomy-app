@@ -39,6 +39,14 @@ class SelectPlatformController extends AppController {
     }
   }
 
+  void togglePlatformSelection(String platform) {
+    if (selectedPlatform.value == platform) {
+      selectedPlatform.value = '';
+    } else {
+      selectedPlatform.value = platform;
+    }
+  }
+
   @override
   void dispose() {
     selectedPlatform.dispose();

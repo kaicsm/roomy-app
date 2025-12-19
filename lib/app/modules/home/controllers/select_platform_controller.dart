@@ -47,6 +47,10 @@ class SelectPlatformController extends AppController {
     }
   }
 
+  void clearPlatformSelection() {
+    selectedPlatform.value = '';
+  }
+
   @override
   void dispose() {
     selectedPlatform.dispose();

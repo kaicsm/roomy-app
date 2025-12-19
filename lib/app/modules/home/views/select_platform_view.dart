@@ -88,6 +88,7 @@ class SelectPlatformView extends AppView<SelectPlatformController> {
 
                 TextField(
                   controller: controller.mediaUrlController,
+                  onTap: () => controller.clearPlatformSelection(),
                   decoration: InputDecoration(
                     hintText: "Or paste your media URL here",
                     suffixIcon: IconButton(

@@ -6,14 +6,14 @@ import 'package:media_kit_video/media_kit_video.dart';
 import 'package:roomy/app/config/di.dart';
 import 'package:roomy/app/core/models/playback_state_model.dart';
 import 'package:roomy/app/core/models/ws_message_model.dart';
-import 'package:roomy/app/core/services/room_service.dart';
+import 'package:roomy/app/core/services/web_socket_service.dart';
 import 'package:roomy/app/core/utils/app_controller.dart';
 import 'package:roomy/app/core/utils/result.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class RoomController extends AppController {
-  final _roomService = getIt<RoomService>();
+  final _webSocketService = getIt<WebSocketService>();
 
   final String roomId;
 
@@ -42,7 +42,7 @@ class RoomController extends AppController {
     player = Player();
     videoController = VideoController(player);
 
-    final result = await _roomService.connectToRoom(roomId);
+    final result = await _webSocketService.connect(roomId);
 
     _setupPlayerListeners();
 

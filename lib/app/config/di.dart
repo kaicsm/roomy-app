@@ -4,6 +4,7 @@ import 'package:roomy/app/core/services/auth_service.dart';
 import 'package:roomy/app/core/services/room_service.dart';
 import 'package:roomy/app/core/services/storage_service.dart';
 import 'package:roomy/app/core/services/user_service.dart';
+import 'package:roomy/app/core/services/web_socket_service.dart';
 import 'package:roomy/app/modules/auth/controllers/login_controller.dart';
 import 'package:roomy/app/modules/auth/controllers/signup_controller.dart';
 import 'package:roomy/app/modules/home/controllers/home_controller.dart';
@@ -29,6 +30,7 @@ Future<void> setupDependencies() async {
 
   getIt.registerLazySingleton<UserService>(() => UserService());
   getIt.registerLazySingleton<RoomService>(() => RoomService());
+  getIt.registerLazySingleton<WebSocketService>(() => WebSocketService());
 
   getIt.registerFactory<HomeController>(() => HomeController());
   getIt.registerFactory<LoginController>(() => LoginController());

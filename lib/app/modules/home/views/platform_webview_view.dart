@@ -144,7 +144,7 @@ class PlatformWebviewView extends AppView<PlatformWebviewController> {
                 final room = await controller.createRoom();
 
                 if (room != null && context.mounted) {
-                  context.pushReplacement('/room/${room.id}');
+                  context.go('/room/${room.id}');
                 } else if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:roomy/app/core/services/web_socket_service.dart';
 import 'package:roomy/app/core/utils/app_view.dart';
 import 'package:roomy/app/modules/room/controllers/room_controller.dart';
 import 'package:roomy/app/router/app_routes.dart';
@@ -44,10 +45,12 @@ class RoomView extends AppView<RoomController> {
                 color: Colors.black,
                 child: Builder(
                   builder: (context) {
-                    final isLoading = controller.isLoading.watch(context);
+                    final connectionStatus = controller.connectionStatus.watch(
+                      context,
+                    );
                     final currentUrl = controller.currentUrl.watch(context);
 
-                    if (isLoading) {
+                    if (connectionStatus == ConnectionStatus.connecting) {
                       return const Center(child: CircularProgressIndicator());
                     }
 

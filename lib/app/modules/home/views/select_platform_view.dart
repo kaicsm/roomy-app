@@ -134,9 +134,7 @@ class SelectPlatformView extends AppView<SelectPlatformController> {
                                           .createRoom();
 
                                       if (context.mounted && room != null) {
-                                        context.pushReplacement(
-                                          '/room/${room.id}',
-                                        );
+                                        context.go('/room/${room.id}');
                                       }
                                     }
                             : () =>

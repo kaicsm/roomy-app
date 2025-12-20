@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
@@ -8,56 +7,42 @@ import 'package:roomy/app/core/models/playback_state_model.dart';
 import 'package:roomy/app/core/models/ws_message_model.dart';
 import 'package:roomy/app/core/services/web_socket_service.dart';
 import 'package:roomy/app/core/utils/app_controller.dart';
-import 'package:roomy/app/core/utils/result.dart';
 import 'package:signals/signals_flutter.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class RoomController extends AppController {
-  final _webSocketService = getIt<WebSocketService>();
-
+  late final WebSocketService _webSocketService;
   final String roomId;
-
-  RoomController(this.roomId);
-
-  final currentUrl = signal('');
-  final currentPosition = signal(Duration.zero);
-  final currentIsPlaying = signal(true);
-  final memberCount = signal(0);
-
-  final connectionStatus = signal('Loading...');
-  late final isLoading = computed(
-    () => connectionStatus.value.toLowerCase().contains('loading...'),
-  );
-
-  final List<StreamSubscription> _subscriptions = [];
-  Timer? _heartbeatTimer;
 
   late final Player player;
   late final VideoController videoController;
 
-  WebSocketChannel? _channel;
+  final currentPosition = signal(Duration.zero);
+  final currentIsPlaying = signal(false);
+  final currentUrl = signal('');
+
+  final memberCount = signal(0);
+
+  late final Signal<ConnectionStatus> connectionStatus;
+
+  final List<StreamSubscription> _subscriptions = [];
+
+  RoomController(this.roomId);
 
   @override
   Future<void> init() async {
+    _webSocketService = getIt<WebSocketService>();
+    connectionStatus = _webSocketService.connectionStatus;
+
     player = Player();
     videoController = VideoController(player);
 
-    final result = await _webSocketService.connect(roomId);
+    await _webSocketService.connect(roomId);
+
+    _subscriptions.add(_webSocketService.messages.listen(_handleMessage));
 
     _setupPlayerListeners();
 
-    switch (result) {
-      case Success(data: final channel):
-        _channel = channel;
-        connectionStatus.set("Connected");
-        _listenToWebsocket();
-        _sendMessage(SyncRequestMessage());
-        _startHeartbeat();
-        break;
-      case Failure(message: final error):
-        connectionStatus.set('Failure: $error');
-        break;
-    }
+    _webSocketService.requestSync();
   }
 
   void _setupPlayerListeners() {
@@ -73,109 +58,65 @@ class RoomController extends AppController {
     );
   }
 
-  void _startHeartbeat() {
-    _heartbeatTimer = Timer.periodic(
-      Duration(seconds: 30),
-      (_) => _sendMessage(HeartbeatMessage()),
-    );
-  }
-
-  void _listenToWebsocket() {
-    _subscriptions.add(
-      _channel!.stream.listen((message) async {
-        final messageJson = jsonDecode(message);
-        final wsMessage = WsIncomingMessage.fromJson(messageJson);
-
-        await _handleWsMessage(wsMessage);
-      }),
-    );
-  }
-
-  Future<void> _handleWsMessage(WsIncomingMessage message) async {
+  Future<void> _handleMessage(WsIncomingMessage message) async {
     switch (message) {
       case SyncFullStateMessage(payload: final state):
-        await _handlePlaybackUpdate(state.playbackState!);
+        await _syncPlayback(state.playbackState!);
+        memberCount.set(state.members.length);
         break;
+
       case PlaybackUpdatedMessage(payload: final state):
-        await _handlePlaybackUpdate(state);
+        await _syncPlayback(state);
         break;
-      case UserJoinedMessage(memberCount: final memberCount):
-        _handleUserJoined(memberCount);
+
+      case UserJoinedMessage(memberCount: final count):
+        memberCount.set(count);
         break;
-      case UserLeftMessage(memberCount: final memberCount):
-        _handleUserLeft(memberCount);
+
+      case UserLeftMessage(memberCount: final count):
+        memberCount.set(count);
+        break;
+
+      default:
         break;
     }
   }
 
-  Future<void> _handlePlaybackUpdate(PlaybackStateModel state) async {
-    final stateMediaUrl = state.mediaUrl;
-    final stateCurrentTime = Duration(milliseconds: state.currentTime);
-    final stateIsPlaying = state.isPlaying;
-
-    if (stateMediaUrl != currentUrl.value) {
+  Future<void> _syncPlayback(PlaybackStateModel state) async {
+    if (state.mediaUrl != currentUrl.value) {
       currentUrl.set(state.mediaUrl);
       await player.open(Media(currentUrl.value));
       await _waitForPlayerReady();
     }
 
-    await player.seek(stateCurrentTime);
+    await player.seek(Duration(milliseconds: state.currentTime));
 
-    if (stateIsPlaying) {
+    if (state.isPlaying) {
       await player.play();
     } else {
       await player.pause();
     }
   }
 
-  void _handleUserJoined(int memberCount) {
-    this.memberCount.set(memberCount);
-  }
-
-  void _handleUserLeft(int memberCount) {
-    this.memberCount.set(memberCount);
-  }
-
-  void _sendPlaybackUpdate({
-    String? mediaUrl,
-    bool? isPlaying,
-    int? currentTime,
-    double? playbackSpeed,
-  }) {
-    final payload = {
-      if (mediaUrl != null) 'mediaUrl': mediaUrl,
-      'isPlaying': isPlaying ?? currentIsPlaying.value,
-      if (currentTime != null) 'currentTime': currentTime,
-      if (playbackSpeed != null) 'playbackSpeed': playbackSpeed,
-    };
-
-    _sendMessage(UpdatePlaybackMessage(payload));
-  }
-
-  void _sendMessage(WsOutgoingMessage message) {
-    final messageJson = message.toJson();
-    _channel!.sink.add(jsonEncode(messageJson));
-  }
-
   Future<void> onPlayPause() async {
     await player.playOrPause();
 
-    final isPlaying = player.state.playing;
-    _sendPlaybackUpdate(isPlaying: isPlaying);
+    _webSocketService.sendPlaybackUpdate(isPlaying: player.state.playing);
   }
 
   Future<void> onSeek(Duration position) async {
     await player.seek(position);
-    _sendPlaybackUpdate(currentTime: position.inMilliseconds);
+
+    _webSocketService.sendPlaybackUpdate(currentTime: position.inMilliseconds);
   }
 
   Future<void> _waitForPlayerReady() async {
     final completer = Completer<void>();
-    StreamSubscription? bufferingSubscription;
+    StreamSubscription? sub;
 
-    bufferingSubscription = player.stream.buffering.listen((isBuffering) {
-      if (!isBuffering && !completer.isCompleted) {
-        bufferingSubscription?.cancel();
+    sub = player.stream.buffering.listen((buffering) {
+      if (!buffering && !completer.isCompleted) {
+        sub?.cancel();
         completer.complete();
       }
     });
@@ -185,19 +126,14 @@ class RoomController extends AppController {
 
   @override
   void dispose() {
-    _heartbeatTimer?.cancel();
-
-    for (final s in _subscriptions) {
-      s.cancel();
+    for (final sub in _subscriptions) {
+      sub.cancel();
     }
-    _subscriptions.clear();
-
+    _webSocketService.dispose();
     player.dispose();
     currentUrl.dispose();
     currentPosition.dispose();
     currentIsPlaying.dispose();
     memberCount.dispose();
-    connectionStatus.dispose();
-    if (_channel != null) _channel!.sink.close();
   }
 }

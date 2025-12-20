@@ -30,7 +30,7 @@ Future<void> setupDependencies() async {
 
   getIt.registerLazySingleton<UserService>(() => UserService());
   getIt.registerLazySingleton<RoomService>(() => RoomService());
-  getIt.registerLazySingleton<WebSocketService>(() => WebSocketService());
+  getIt.registerFactory<WebSocketService>(() => WebSocketService());
 
   getIt.registerFactory<HomeController>(() => HomeController());
   getIt.registerFactory<LoginController>(() => LoginController());

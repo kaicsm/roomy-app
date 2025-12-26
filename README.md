@@ -1,16 +1,30 @@
-# roomy
+# Roomy
 
-A new Flutter project.
+Roomy is a real-time media synchronization service that lets you watch videos or even listen music together with your friends, no matter where they are. This is the flutter client for Roomy.
 
-## Getting Started
+# Getting Started
 
-This project is a starting point for a Flutter application.
+### Clone the repository and install its dependencies:
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+git clone https://github.com/kaicsm/roomy-app
+cd roomy-app
+flutter pub get
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Set up environment variables:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+cp .env.example .env
+```
+
+and edit .env with your own values of each variable.
+
+### Run
+
+Make sure the <a href="https://github.com/kaicsm/roomy-backend">Roomy backend API</a> is running and the `SERVER_DEBUG_URL` defined on your `.env` is correct.
+
+Connect your device on your system and run the app using:
+```sh
+flutter run
+```

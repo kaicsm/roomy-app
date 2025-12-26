@@ -1,6 +1,11 @@
 # Roomy
 
-Roomy is a real-time media synchronization service that lets you watch videos or even listen music together with your friends, no matter where they are. This is the flutter client for Roomy.
+Roomy is a real-time media synchronization service that lets you watch videos or even listen music together with your friends, no matter where they are. This is the Flutter client for Roomy.
+
+# About the client
+The project follows Clean Architecture principles and its features are organized into modules. Each module can contain two folders: `controllers` and `views`.
+
+Controllers are responsible for business logic and state management using `signals` library, while Views build the UI and react to state changes.
 
 # Getting Started
 
@@ -22,9 +27,15 @@ and edit .env with your own values of each variable.
 
 ### Run
 
-Make sure the <a href="https://github.com/kaicsm/roomy-backend">Roomy backend API</a> is running and the `SERVER_DEBUG_URL` defined on your `.env` is correct.
+Make sure the [Roomy backend API](https://github.com/kaicsm/roomy-backend) is running and the `SERVER_DEBUG_URL` defined on your `.env` is correct.
 
 Connect your device on your system and run the app using:
 ```sh
 flutter run
 ```
+
+# Libraries and Frameworks
+- `signals` for the app state management
+- `go_router` for the app route management
+- `dio` for http comunication
+- `get_it` for dependency injection
